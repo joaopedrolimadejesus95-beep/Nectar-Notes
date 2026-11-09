@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Música - NectarNotes</title>
+    <link rel="stylesheet" href="../css/ifrmaedatelademusica.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-frame">
+            <div class="music-cover">
+                <img id="songCover" src="../../pictures/Capas/Capa01.webp" alt="Capa da Música" style="border-radius: 12px; width: 280px; height: 280px; object-fit: cover;">
+            </div>
+            <h2 id="songTitle" style="margin: 5px 0 15px 0; color: #ffd800;">Honeycomb Dreams</h2>
+
+            <input
+                value="favorite-button"
+                name="favorite-checkbox"
+                id="favorite"
+                type="checkbox"
+            />
+            <label class="container-1" for="favorite">
+                <svg
+                    class="feather feather-heart"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    height="24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <div class="action">
+                    <span class="option-1">Adicionar à Colmeia</span>
+                    <span class="option-2">Adicionado à Colmeia</span>
+                </div>
+            </label>
+
+            <div class="music-player">
+                <audio id="songAudio" src="../../audios/audio1.mp3" controls></audio>
+            </div>
+
+            <div class="music-info">
+                <p id="songArtist">Autor: Queen Bee</p>
+                <p id="songDuration">Duração: 3:45</p>
+                <p id="songYear">Lançamento: 2024</p>
+                <p id="songGenre">Gênero: Pop</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const songId = Number(params.get('id') || 1);
+            const song = await NectarAPI.getSongById(songId);
+
+            if (song) {
+                document.getElementById('songCover').src = song.cover_url;
+                document.getElementById('songTitle').textContent = song.title;
+                document.getElementById('songArtist').textContent = 'Autor: ' + song.artist;
+                document.getElementById('songDuration').textContent = 'Duração: ' + (song.duration || '3:45');
+                document.getElementById('songYear').textContent = 'Lançamento: ' + (song.release_year || 2024);
+                document.getElementById('songGenre').textContent = 'Gênero: ' + (song.genre || 'Pop');
+
+                const audioEl = document.getElementById('songAudio');
+                audioEl.src = song.audio_url;
+
+                const favCheckbox = document.getElementById('favorite');
+                favCheckbox.checked = Boolean(song.liked);
+
+                favCheckbox.addEventListener('change', async () => {
+                    const result = await NectarAPI.toggleLikeSong(song.id);
+                    favCheckbox.checked = Boolean(result.liked);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

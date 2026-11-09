@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NectarNotes - Início</title>
+    <link rel="stylesheet" href="../../view/css/telaPrincipal.css">
+    <script src="../../view/js/script.js" defer></script>
+    <link rel="icon" href="../../pictures/others/logo.png" type="image/png">
+    <style>
+        .CardMusic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #1a1e30;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            width: 200px;
+            min-width: 200px;
+            height: 270px;
+            margin-right: 15px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-sizing: border-box;
+        }
+        .CardMusic.playing {
+            border-color: #ffd800;
+            box-shadow: 0 0 15px rgba(255, 216, 0, 0.5);
+        }
+        .CardImage {
+            width: 170px;
+            height: 170px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .CardImage img.CapaMusica {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            object-fit: cover;
+        }
+        .CardContent {
+            text-align: center;
+            margin-top: 8px;
+            width: 100%;
+        }
+        .NomeMusica {
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .NomeArtista {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .btn-open-song {
+            display: inline-block;
+            font-size: 11px;
+            color: #131722 !important;
+            background-color: #ffd800;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-open-song:hover {
+            background-color: #ffea00;
+        }
+        .AudioMusica {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="menu-container"></div>
+
+    <header class="header">
+        <div id="parallax-container"></div>
+    </header>
+
+    <div class="nomeCatalago">
+        <h1>Em Alta</h1>
+    </div>
+    <div class="scrollable-container" id="container1"></div>
+
+    <div class="nomeCatalago">
+        <h1>Recomendados</h1>
+    </div>
+    <div class="scrollable-container" id="container2"></div>
+
+    <div class="nomeCatalago">
+        <h1>Ouvidas Recentemente</h1>
+    </div>
+    <div class="scrollable-container" id="container3"></div>
+
+    <script>
+        function renderSongCard(container, song) {
+            const card = document.createElement('div');
+            card.className = 'CardMusic';
+            card.dataset.songId = song.id;
+            card.innerHTML = `
+                <div class="CardImage">
+                    <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}" draggable="false">
+                </div>
+                <div class="CardContent">
+                    <div class="NomeMusica" title="${song.title}"><b>${song.title}</b></div>
+                    <div class="NomeArtista" title="${song.artist}">${song.artist}</div>
+                    <a class="btn-open-song" href="telademusica.html?id=${song.id}">▶ Detalhes</a>
+                </div>
+                <audio class="AudioMusica">
+                    <source src="${song.audio_url}" type="audio/mpeg">
+                </audio>
+            `;
+            card.addEventListener('click', (e) => {
+                if (card.dataset.dragged === 'true') return;
+                playMusic(card, e);
+            });
+            container.appendChild(card);
+        }
+
+        function makeContainerDraggable(container) {
+            if (!container) return;
+            let isDragging = false;
+            let moved = false;
+            let startX, scrollLeft;
+
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                moved = false;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDragging = false;
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDragging = false;
+                setTimeout(() => {
+                    container.querySelectorAll('.CardMusic').forEach(c => c.dataset.dragged = 'false');
+                }, 50);
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.7;
+                if (Math.abs(walk) > 6) {
+                    moved = true;
+                    container.querySelectorAll('.CardMusic').forEach(c => c.dataset.dragged = 'true');
+                }
+                if (moved) {
+                    e.preventDefault();
+                    container.scrollLeft = scrollLeft - walk;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Importar o menu do módulo
+            fetch('../../modules/elements/menu.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('menu-container').innerHTML = data;
+                })
+                .catch(error => console.error('Erro ao carregar o menu:', error));
+
+            // Importar o parallax do módulo
+            fetch('../../modules/elements/paralax.html')
+                .then(response => response.text())
+                .then(data => {
+                    const pContainer = document.getElementById('parallax-container');
+                    pContainer.innerHTML = data;
+                    const searchInput = pContainer.querySelector('#searchInput');
+                    if (searchInput) {
+                        searchInput.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                window.location.href = `resultado.html?q=${encodeURIComponent(searchInput.value.trim())}`;
+                            }
+                        });
+                    }
+                })
+                .catch(error => console.error('Erro ao carregar o parallax:', error));
+
+            // Carregar músicas do Banco de Dados SQLite (com fallback automático)
+            const allSongs = await NectarAPI.getSongs();
+            const emAlta = allSongs.filter(s => s.category === 'em_alta');
+            const recomendados = allSongs.filter(s => s.category === 'recomendados');
+            const recentes = allSongs.filter(s => s.category === 'recentes');
+
+            const c1 = document.getElementById('container1');
+            const c2 = document.getElementById('container2');
+            const c3 = document.getElementById('container3');
+
+            emAlta.forEach(s => renderSongCard(c1, s));
+            recomendados.forEach(s => renderSongCard(c2, s));
+            recentes.forEach(s => renderSongCard(c3, s));
+
+            makeContainerDraggable(c1);
+            makeContainerDraggable(c2);
+            makeContainerDraggable(c3);
+        });
+
+        document.addEventListener('scroll', function () {
+            const scrollPosition = window.scrollY;
+            const l1 = document.querySelector('.layer1');
+            const l2 = document.querySelector('.layer2');
+            const l3 = document.querySelector('.layer3');
+            const l4 = document.querySelector('.layer4');
+
+            if (l1) l1.style.transform = `translateY(${scrollPosition * 0.4}px)`;
+            if (l2) l2.style.transform = `translateY(${scrollPosition * 0.2}px)`;
+            if (l3) l3.style.transform = `translateY(${scrollPosition * 0.1}px)`;
+            if (l4) l4.style.transform = `translateY(${scrollPosition * 0.3}px)`;
+        });
+    </script>
+</body>
+
+</html>

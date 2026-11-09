@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <link rel="shortcut icon" type="image/png" href="../../pictures/others/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/TelaCadastro.css">
+    <title>Cadastro - NectarNotes</title>
+</head>
+
+<body>
+    <div class="signup-container">
+        <img src="../../pictures/others/logo.png" alt="Logo NectarNotes" style="width: 90px; height: auto; margin: 0 auto 10px auto;">
+        <h1>Criar Conta</h1>
+        <p id="signupError" style="color: #d93025; font-size: 14px; display: none; margin-bottom: 12px;"></p>
+        <form id="signupForm">
+            <input type="text" name="username" placeholder="Nome de Usuário" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <div class="password-container">
+                <input type="password" name="password" placeholder="Senha" required><br>
+                <input type="password" name="confirmPassword" placeholder="Confirmar Senha" required><br>
+            </div>
+            <input type="submit" value="Cadastrar">
+        </form>
+        <div style="margin-top: 10px; font-size: 14px; color: #555;">
+            Já possui uma conta? <a href="../../index.html" style="color: #d4a000; font-weight: bold; text-decoration: none;">Fazer Login</a>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementsByName('username')[0].value.trim();
+            const email = document.getElementsByName('email')[0].value.trim();
+            const password = document.getElementsByName('password')[0].value;
+            const confirmPassword = document.getElementsByName('confirmPassword')[0].value;
+            const errorBox = document.getElementById('signupError');
+            errorBox.style.display = 'none';
+
+            if (password !== confirmPassword) {
+                errorBox.textContent = 'As senhas não correspondem!';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    NectarAPI.saveUserSession(data.user);
+                    window.location.href = 'principal.html';
+                    return;
+                } else {
+                    const errData = await response.json();
+                    errorBox.textContent = errData.error || 'Erro ao realizar cadastro.';
+                    errorBox.style.display = 'block';
+                    return;
+                }
+            } catch (_) {
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', email);
+                localStorage.setItem('password', password);
+                window.location.href = 'principal.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

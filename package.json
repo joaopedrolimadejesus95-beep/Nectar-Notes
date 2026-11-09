@@ -1,0 +1,15 @@
+{
+  "name": "nectarnotes",
+  "version": "1.0.0",
+  "description": "NectarNotes - Plataforma de música temática de colmeia com Banco de Dados SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "init-db": "node -e \"require('./database/db.js'); console.log('Banco de dados SQLite inicializado com sucesso!');\""
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "license": "MIT"
+}

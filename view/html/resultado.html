@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Busca - NectarNotes</title>
+    <link rel="stylesheet" href="../css/resultado.css">
+    <script src="../js/script.js" defer></script>
+    <link rel="icon" href="../../pictures/others/logo.png" type="image/png">
+    <style>
+        main {
+            height: auto;
+            min-height: 80vh;
+            padding-top: 90px;
+            padding-left: 100px;
+            padding-right: 30px;
+            align-items: flex-start;
+        }
+        .results-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        .result-card {
+            background-color: #1a1e30;
+            border-radius: 12px;
+            padding: 15px;
+            width: 190px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .result-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 14px rgba(255, 216, 0, 0.3);
+        }
+        .result-card img {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .clear-icon {
+            position: absolute;
+            right: 12px;
+            color: #ffd800;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="group">
+        <img id="LupaPesquisa" src="../../pictures/icons/search.png" alt="Lupa" class="icon" style="width: 20px; height: 20px; top: 10px; left: 12px;">
+        <input id="searchInput" class="input" type="search" placeholder="Descubra uma colmeia de melodias" />
+        <span class="clear-icon" id="clearIcon">✕</span>
+    </div>
+
+    <div class="menu">
+        <ul>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li class="menu-separator"></li>
+            <div class="menu-profile-config">
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+            </div>
+        </ul>
+    </div>
+
+    <main>
+        <div class="container" style="width: 100%;">
+            <h1 class="temp" id="resultsCount">Buscando...</h1>
+            <div class="results-grid" id="resultsGrid"></div>
+        </div>
+    </main>
+
+    <script>
+        async function performSearch(queryText) {
+            const songs = await NectarAPI.getSongs(queryText ? { search: queryText } : {});
+            const countEl = document.getElementById('resultsCount');
+            const grid = document.getElementById('resultsGrid');
+
+            countEl.textContent = `${songs.length} Resultado(s) encontrado(s)${queryText ? ` para "${queryText}"` : ''}`;
+            grid.innerHTML = '';
+
+            songs.forEach(song => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <img src="${song.cover_url}" alt="${song.title}">
+                    <div style="font-weight: bold; margin-top: 10px; color: #fff;">${song.title}</div>
+                    <div style="font-size: 13px; color: #bbb; margin-top: 4px;">${song.artist}</div>
+                    <div style="font-size: 12px; color: #ffd800; margin-top: 4px;">${song.genre}</div>
+                `;
+                card.addEventListener('click', () => {
+                    window.location.href = `telademusica.html?id=${song.id}`;
+                });
+                grid.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const clearIcon = document.getElementById('clearIcon');
+            const params = new URLSearchParams(window.location.search);
+            const initialQuery = params.get('q') || '';
+
+            searchInput.value = initialQuery;
+            if (clearIcon) {
+                clearIcon.style.display = initialQuery ? 'block' : 'none';
+            }
+
+            performSearch(initialQuery);
+
+            searchInput.addEventListener('input', function () {
+                if (clearIcon) {
+                    clearIcon.style.display = searchInput.value ? 'block' : 'none';
+                }
+                performSearch(searchInput.value.trim());
+            });
+
+            if (clearIcon) {
+                clearIcon.addEventListener('click', function () {
+                    searchInput.value = '';
+                    clearIcon.style.display = 'none';
+                    searchInput.focus();
+                    performSearch('');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

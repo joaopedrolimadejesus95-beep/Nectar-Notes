@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="shortcut icon" type="image/png" href="../../pictures/others/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/Config.css">
+    <script src="../js/script.js"></script>
+    <title>Configurações - NectarNotes</title>
+</head>
+
+<body>
+    <div class="menu">
+        <ul>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li class="menu-separator"></li>
+            <div class="menu-profile-config">
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h2 style="margin-top: 0; color: #f0c30f;">Configurações da Conta</h2>
+        <p id="statusMsg" style="display: none; padding: 8px; border-radius: 6px; font-size: 14px;"></p>
+
+        <div class="profile-info">
+            <img id="profile-pic" src="../../pictures/icons/profile.png" alt="Foto de Perfil" style="object-fit: cover;">
+            <label for="profile-photo" class="change-photo-btn" style="text-align: center;">Trocar Foto</label>
+            <input type="file" id="profile-photo" accept="image/*" onchange="displayProfilePic(this)">
+        </div>
+
+        <div class="profile-info">
+            <label for="profile-name">Nome de Perfil:</label>
+            <input type="text" id="profile-name" class="change-name-input" value="AbelhaRainha"
+                placeholder="Digite seu novo nome de usuário">
+        </div>
+
+        <div class="profile-info">
+            <label for="profile-email">Email:</label>
+            <input type="email" id="profile-email" class="change-email-input" value="rainha@nectarnotes.com">
+        </div>
+
+        <div class="profile-info">
+            <label for="profile-bio">Biografia:</label>
+            <input type="text" id="profile-bio" placeholder="Coloque sua biografia aqui">
+        </div>
+
+        <div class="profile-info">
+            <label for="profile-password">Nova Senha:</label>
+            <input type="password" id="profile-password" class="change-password-input" placeholder="Deixe em branco para manter">
+        </div>
+
+        <div class="profile-info">
+            <label for="profile-country">País:</label>
+            <select id="profile-country" class="change-country-input">
+                <option value="brasil">Brasil</option>
+                <option value="USA">Estados Unidos</option>
+                <option value="França">França</option>
+                <option value="Espanha">Espanha</option>
+                <option value="Alemanha">Alemanha</option>
+                <option value="Reino Unido">Reino Unido</option>
+                <option value="China">China</option>
+            </select>
+        </div>
+
+        <button class="save-btn" onclick="saveSettings()">Salvar Configurações</button>
+        <button class="delete-account-btn" onclick="deleteAccount()">Excluir Conta</button>
+        <div style="margin-top: 12px;">
+            <a href="../../index.html" style="color: #f0c30f; text-decoration: none; font-size: 14px;">Sair da Conta (Logout)</a>
+        </div>
+    </div>
+
+    <script>
+        function showMessage(text, isError = false) {
+            const msg = document.getElementById('statusMsg');
+            msg.textContent = text;
+            msg.style.display = 'block';
+            msg.style.backgroundColor = isError ? '#5c1919' : '#1b4d20';
+            msg.style.color = '#fff';
+        }
+
+        function displayProfilePic(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const profilePic = e.target.result;
+                    document.getElementById('profile-pic').src = profilePic;
+                    localStorage.setItem('profilePic', profilePic);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function loadSettings() {
+            const userId = NectarAPI.getCurrentUserId();
+            try {
+                const res = await fetch(`/api/users/${userId}`);
+                if (res.ok) {
+                    const { user } = await res.json();
+                    NectarAPI.saveUserSession(user);
+                }
+            } catch (_) {}
+
+            const username = localStorage.getItem('username');
+            const email = localStorage.getItem('email');
+            const bio = localStorage.getItem('bio');
+            const profilePic = localStorage.getItem('profilePic');
+            const country = localStorage.getItem('country');
+
+            if (username) document.getElementById('profile-name').value = username;
+            if (email) document.getElementById('profile-email').value = email;
+            if (bio) document.getElementById('profile-bio').value = bio;
+            if (profilePic) document.getElementById('profile-pic').src = resolveAssetUrl(profilePic);
+            if (country) document.getElementById('profile-country').value = country;
+        }
+
+        async function saveSettings() {
+            const userId = NectarAPI.getCurrentUserId();
+            const username = document.getElementById('profile-name').value.trim();
+            const email = document.getElementById('profile-email').value.trim();
+            const bio = document.getElementById('profile-bio').value.trim();
+            const password = document.getElementById('profile-password').value;
+            const country = document.getElementById('profile-country').value;
+            const profile_pic = localStorage.getItem('profilePic') || '/pictures/icons/profile.png';
+
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            localStorage.setItem('bio', bio);
+            localStorage.setItem('country', country);
+            if (password) localStorage.setItem('password', password);
+
+            try {
+                const res = await fetch(`/api/users/${userId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, bio, password, country, profile_pic })
+                });
+                if (res.ok) {
+                    const { user } = await res.json();
+                    NectarAPI.saveUserSession(user);
+                    showMessage('Configurações salvas no Banco de Dados com sucesso!');
+                    return;
+                }
+            } catch (_) {}
+
+            showMessage('Configurações salvas localmente com sucesso!');
+        }
+
+        async function deleteAccount() {
+            if (!confirm('Tem certeza que deseja excluir sua conta?')) return;
+            const userId = NectarAPI.getCurrentUserId();
+            try {
+                await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+            } catch (_) {}
+            localStorage.clear();
+            window.location.href = '../../index.html';
+        }
+
+        // Corrigido: Agora o DOMContentLoaded fica fora da função saveSettings!
+        document.addEventListener('DOMContentLoaded', loadSettings);
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player de Música - NectarNotes</title>
+    <link rel="shortcut icon" type="image/png" href="../../pictures/others/logo.png">
+    <link rel="stylesheet" href="../css/telademusica.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li><a href="principal.html" title="Início" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
+            <li><a href="TelaPesquisa.html" title="Pesquisa" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
+            <li><a href="MusicasSalvas.html" title="Playlists Salvas" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
+            <li><a href="TelaPets.html" title="Pets" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li class="menu-separator"></li>
+            <div class="menu-profile-config">
+                <li><a href="TelaPerfil.html" title="Perfil" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
+                <li><a href="TelaConfig.html" title="Configurações" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="container" style="margin-left: 85px; width: calc(100% - 85px);">
+        <div class="left-side">
+            <iframe id="playerIframe" src="iframedatelademusica.html?id=1" style="width: 100%; height: 95%; border: none;"></iframe>
+        </div>
+        <div class="right-side">
+            <h1 style="color: #ffd800;">Fila da Colmeia</h1>
+            <div class="album" id="albumSongList"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const currentId = Number(params.get('id') || 1);
+            const iframe = document.getElementById('playerIframe');
+            iframe.src = `iframedatelademusica.html?id=${currentId}`;
+
+            const songs = await NectarAPI.getSongs();
+            const listEl = document.getElementById('albumSongList');
+            listEl.innerHTML = '';
+
+            songs.forEach(song => {
+                const item = document.createElement('div');
+                item.className = 'song';
+                item.style.cursor = 'pointer';
+                if (song.id === currentId) {
+                    item.style.border = '2px solid #ffd800';
+                }
+                item.innerHTML = `
+                    <img src="${song.cover_url}" alt="${song.title}" class="album-art" style="object-fit: cover;">
+                    <div>
+                        <h2 style="font-size: 18px; margin-bottom: 4px; color: #ffd800;">${song.title}</h2>
+                        <p style="color: #ccc; font-size: 14px;">${song.artist} • ${song.genre} (${song.duration})</p>
+                    </div>
+                `;
+                item.addEventListener('click', () => {
+                    iframe.src = `iframedatelademusica.html?id=${song.id}`;
+                    document.querySelectorAll('#albumSongList .song').forEach(el => el.style.border = 'none');
+                    item.style.border = '2px solid #ffd800';
+                    history.replaceState(null, '', `?id=${song.id}`);
+                });
+                listEl.appendChild(item);
+            });
+        });
+    </script>
+</body>
+</html>

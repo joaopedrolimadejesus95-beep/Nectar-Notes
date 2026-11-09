@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - NectarNotes</title>
+    <link rel="shortcut icon" type="image/png" href="../../pictures/others/logo.png">
+    <link rel="stylesheet" href="../css/Perfil.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li class="menu-separator"></li>
+            <div class="menu-profile-config">
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="banner" id="profileBanner" style="background-image: url('../../pictures/others/honeyWaterfall.png'); background-size: cover; background-position: center;">
+            <a href="TelaConfig.html" title="Editar Perfil">
+                <img src="../../pictures/icons/camera.png" alt="Editar" class="banner-button">
+            </a>
+        </div>
+
+        <div class="profile-container">
+            <div class="profile-picture-container">
+                <img id="profilePicture" src="../../pictures/icons/profile.png" alt="Foto de Perfil" class="profile-picture" onclick="window.location.href='TelaConfig.html'">
+            </div>
+            <div class="profile-info">
+                <div class="username" id="profileUsername">AbelhaRainha</div>
+                <div class="bio" id="profileBio">Apaixonada pelas melhores melodias da colmeia! 🐝🍯</div>
+                <div class="country" id="profileCountry">📍 Brasil</div>
+            </div>
+        </div>
+
+        <div class="tabs" style="margin-top: 25px;">
+            <div class="tab active" id="tabLiked" onclick="switchTab('liked')">❤️ Músicas na Colmeia</div>
+            <div class="tab" id="tabPlaylists" onclick="switchTab('playlists')">🎵 Minhas Playlists</div>
+            <div class="tab" id="tabPet" onclick="switchTab('pet')">🐝 Meu Pet</div>
+        </div>
+
+        <div class="info" id="profileContentArea" style="justify-content: flex-start;"></div>
+    </div>
+
+    <script>
+        let userProfileData = {
+            user: {
+                username: localStorage.getItem('username') || 'AbelhaRainha',
+                bio: localStorage.getItem('bio') || 'Apaixonada pelas melhores melodias da colmeia! 🐝🍯',
+                country: localStorage.getItem('country') || 'Brasil',
+                profile_pic: localStorage.getItem('profilePic') || '../../pictures/icons/profile.png'
+            },
+            likedSongs: DEFAULT_SONGS_FALLBACK.slice(0, 5),
+            pet: { name: 'Buzzy Mel', xp: 55, level: 2, photo_url: '../../pictures/FotosPets/FotoPet01.jpg' }
+        };
+
+        async function loadUserProfile() {
+            const userId = NectarAPI.getCurrentUserId();
+            try {
+                const res = await fetch(`/api/users/${userId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    userProfileData = {
+                        user: {
+                            ...data.user,
+                            profile_pic: localStorage.getItem('profilePic') || resolveAssetUrl(data.user.profile_pic)
+                        },
+                        likedSongs: (data.likedSongs || []).map(s => ({
+                            ...s,
+                            cover_url: resolveAssetUrl(s.cover_url)
+                        })),
+                        pet: data.pet ? {
+                            ...data.pet,
+                            photo_url: resolveAssetUrl(data.pet.photo_url)
+                        } : userProfileData.pet
+                    };
+                }
+            } catch (_) {}
+
+            document.getElementById('profileUsername').textContent = userProfileData.user.username;
+            document.getElementById('profileBio').textContent = userProfileData.user.bio;
+            document.getElementById('profileCountry').textContent = '📍 ' + (userProfileData.user.country || 'Brasil');
+            document.getElementById('profilePicture').src = userProfileData.user.profile_pic;
+
+            switchTab('liked');
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            const area = document.getElementById('profileContentArea');
+            area.innerHTML = '';
+
+            if (tabName === 'liked') {
+                document.getElementById('tabLiked').classList.add('active');
+                const songs = userProfileData.likedSongs || [];
+                if (songs.length === 0) {
+                    area.innerHTML = '<p style="color: #aaa;">Nenhuma música curtida ainda. Clique em uma música para adicioná-la à colmeia!</p>';
+                    return;
+                }
+                songs.forEach(song => {
+                    const item = document.createElement('div');
+                    item.className = 'music-item';
+                    item.style.cursor = 'pointer';
+                    item.innerHTML = `
+                        <img src="${song.cover_url}" alt="${song.title}" class="music-cover">
+                        <div class="music-title">${song.title}</div>
+                    `;
+                    item.addEventListener('click', () => {
+                        window.location.href = `telademusica.html?id=${song.id}`;
+                    });
+                    area.appendChild(item);
+                });
+            } else if (tabName === 'playlists') {
+                document.getElementById('tabPlaylists').classList.add('active');
+                area.innerHTML = `
+                    <div style="padding: 15px;">
+                        <p>Acesse e gerencie todas as suas playlists salvas na Colmeia:</p>
+                        <a href="MusicasSalvas.html" style="display: inline-block; background: #f2e41d; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">Abrir Playlists Salvas</a>
+                    </div>
+                `;
+            } else if (tabName === 'pet') {
+                document.getElementById('tabPet').classList.add('active');
+                const pet = userProfileData.pet;
+                area.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 20px; padding: 10px;">
+                        <img src="${pet.photo_url}" alt="${pet.name}" style="width: 120px; height: 120px; border-radius: 16px; object-fit: cover;">
+                        <div>
+                            <h3 style="margin: 0 0 8px 0; color: #f2e41d;">${pet.name}</h3>
+                            <p style="margin: 4px 0;">Nível: <b>${pet.level}</b> (${pet.xp} XP)</p>
+                            <a href="TelaPets.html" style="display: inline-block; margin-top: 8px; background: #f2e41d; color: #000; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: bold;">Personalizar Pet</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
+    </script>
+</body>
+</html>

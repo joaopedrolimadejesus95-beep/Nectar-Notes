@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/png" href="../../pictures/others/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/Pesquisa.css">
+    <script src="../js/script.js"></script>
+    <title>Pesquisa - NectarNotes</title>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li class="menu-separator"></li>
+            <div class="menu-profile-config">
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="under-construction" style="margin-left: 110px; width: calc(90% - 110px);">
+        <div class="construction-content">
+            <h1>Explorar a Colmeia 🐝</h1>
+            <p>Pesquise por músicas, artistas ou gêneros musicais no nosso banco de dados:</p>
+            <div class="search-container">
+                <input type="text" id="pageSearchInput" placeholder="Ex: Queen Bee, Pop, Rock, Mel..." />
+                <button type="button" onclick="executarBusca()" style="margin-left: 10px;">Buscar</button>
+            </div>
+            <div class="animation-wrapper">
+                <div class="construction-icon">🐝</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function executarBusca() {
+            const q = document.getElementById('pageSearchInput').value.trim();
+            window.location.href = `resultado.html?q=${encodeURIComponent(q)}`;
+        }
+        document.getElementById('pageSearchInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                executarBusca();
+            }
+        });
+    </script>
+</body>
+</html>
