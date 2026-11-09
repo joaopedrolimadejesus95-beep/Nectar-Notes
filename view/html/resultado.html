@@ -3,60 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados da Busca - NectarNotes</title>
+    <title>Resultados da Busca Indie - NectarNotes</title>
     <link rel="stylesheet" href="../css/resultado.css">
+    <link rel="stylesheet" href="../css/design-system.css">
     <script src="../js/script.js" defer></script>
     <link rel="icon" href="../../pictures/others/logo.png" type="image/png">
     <style>
+        body {
+            background-color: #0b0d14 !important;
+        }
         main {
             height: auto;
-            min-height: 80vh;
+            min-height: 85vh;
             padding-top: 90px;
-            padding-left: 100px;
-            padding-right: 30px;
+            padding-left: 116px;
+            padding-right: 32px;
             align-items: flex-start;
+            background-color: #0b0d14 !important;
         }
         .results-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center;
-            margin-top: 25px;
-        }
-        .result-card {
-            background-color: #1a1e30;
-            border-radius: 12px;
-            padding: 15px;
-            width: 190px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.25s, box-shadow 0.25s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .result-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 14px rgba(255, 216, 0, 0.3);
-        }
-        .result-card img {
-            width: 160px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
+            justify-content: flex-start;
+            margin-top: 24px;
         }
         .clear-icon {
             position: absolute;
-            right: 12px;
+            right: 14px;
             color: #ffd800;
             cursor: pointer;
             display: none;
             font-weight: bold;
         }
+        .filter-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .chip-btn {
+            background: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .chip-btn:hover, .chip-btn.active {
+            background: linear-gradient(135deg, #ffd800, #ff9d00);
+            color: #0b0d14;
+            border-color: transparent;
+        }
     </style>
 </head>
 <body>
-    <div class="group">
-        <img id="LupaPesquisa" src="../../pictures/icons/search.png" alt="Lupa" class="icon" style="width: 20px; height: 20px; top: 10px; left: 12px;">
-        <input id="searchInput" class="input" type="search" placeholder="Descubra uma colmeia de melodias" />
+    <div class="group" style="top: 24px; right: 32px;">
+        <img id="LupaPesquisa" src="../../pictures/icons/search.png" alt="Lupa" class="icon" style="width: 18px; height: 18px; top: 12px; left: 14px;">
+        <input id="searchInput" class="input" type="search" placeholder="Filtrar por artista, faixa, gênero ou cidade..." style="border-radius: 999px; border: 1px solid rgba(255, 216, 0, 0.35); padding-left: 42px;" />
         <span class="clear-icon" id="clearIcon">✕</span>
     </div>
 
@@ -66,6 +73,7 @@
             <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
             <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
             <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
                 <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
@@ -75,8 +83,17 @@
     </div>
 
     <main>
-        <div class="container" style="width: 100%;">
-            <h1 class="temp" id="resultsCount">Buscando...</h1>
+        <div class="container" style="width: 100%; text-align: left;">
+            <h1 class="temp" id="resultsCount" style="margin: 0; font-size: 28px;">Buscando...</h1>
+            <div class="filter-chips">
+                <button class="chip-btn active" onclick="setQuickFilter('', this)">Todos</button>
+                <button class="chip-btn" onclick="setQuickFilter('Indie Rock', this)">Indie Rock</button>
+                <button class="chip-btn" onclick="setQuickFilter('Bedroom', this)">Bedroom Pop</button>
+                <button class="chip-btn" onclick="setQuickFilter('Lo-Fi', this)">Lo-Fi</button>
+                <button class="chip-btn" onclick="setQuickFilter('MPB', this)">MPB / Folk</button>
+                <button class="chip-btn" onclick="setQuickFilter('São Paulo', this)">📍 São Paulo</button>
+                <button class="chip-btn" onclick="setQuickFilter('Curitiba', this)">📍 Curitiba</button>
+            </div>
             <div class="results-grid" id="resultsGrid"></div>
         </div>
     </main>
@@ -87,23 +104,40 @@
             const countEl = document.getElementById('resultsCount');
             const grid = document.getElementById('resultsGrid');
 
-            countEl.textContent = `${songs.length} Resultado(s) encontrado(s)${queryText ? ` para "${queryText}"` : ''}`;
+            countEl.textContent = `${songs.length} Artista(s) / Faixa(s) encontrada(s)${queryText ? ` para "${queryText}"` : ' na Colmeia'}`;
             grid.innerHTML = '';
 
             songs.forEach(song => {
                 const card = document.createElement('div');
-                card.className = 'result-card';
+                card.className = 'CardMusic';
+                card.dataset.songId = song.id;
+                card.style.marginRight = '0';
                 card.innerHTML = `
-                    <img src="${song.cover_url}" alt="${song.title}">
-                    <div style="font-weight: bold; margin-top: 10px; color: #fff;">${song.title}</div>
-                    <div style="font-size: 13px; color: #bbb; margin-top: 4px;">${song.artist}</div>
-                    <div style="font-size: 12px; color: #ffd800; margin-top: 4px;">${song.genre}</div>
+                    <div class="CardImage">
+                        <span class="card-genre-pill">${song.genre || 'Indie'}</span>
+                        <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}">
+                        <div class="card-play-fab">▶</div>
+                    </div>
+                    <div class="CardContent">
+                        <div class="NomeMusica"><b>${song.title}</b></div>
+                        <div class="NomeArtista">${song.artist}</div>
+                        <div class="card-footer-row">
+                            <span class="card-plays-count">📍 ${song.artist_city || 'Brasil'}</span>
+                            <a class="btn-open-song" href="telademusica.html?id=${song.id}">Artista →</a>
+                        </div>
+                    </div>
                 `;
-                card.addEventListener('click', () => {
-                    window.location.href = `telademusica.html?id=${song.id}`;
-                });
+                card.addEventListener('click', (e) => playMusic(card, e));
                 grid.appendChild(card);
             });
+        }
+
+        function setQuickFilter(term, btn) {
+            document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = term;
+            performSearch(term);
         }
 
         document.addEventListener('DOMContentLoaded', function () {

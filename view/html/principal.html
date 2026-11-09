@@ -4,80 +4,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NectarNotes - Início</title>
+    <title>NectarNotes — O Streaming dos Artistas Indies</title>
     <link rel="stylesheet" href="../../view/css/telaPrincipal.css">
+    <link rel="stylesheet" href="../../view/css/design-system.css">
     <script src="../../view/js/script.js" defer></script>
     <link rel="icon" href="../../pictures/others/logo.png" type="image/png">
     <style>
-        .CardMusic {
+        body {
+            background-color: #0b0d14;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to bottom, transparent, #0b0d14);
+            z-index: 6;
+            pointer-events: none;
+        }
+        .indie-spotlight-banner {
+            margin: -30px 32px 36px 116px;
+            padding: 28px 32px;
+            border-radius: 24px;
+            background: linear-gradient(125deg, rgba(28, 33, 54, 0.92) 0%, rgba(16, 19, 32, 0.95) 65%, rgba(255, 216, 0, 0.14) 100%);
+            border: 1px solid rgba(255, 216, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(18px);
+            position: relative;
+            z-index: 10;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            background-color: #1a1e30;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            width: 200px;
-            min-width: 200px;
-            height: 270px;
-            margin-right: 15px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            box-sizing: border-box;
+            justify-content: space-between;
+            gap: 28px;
+            flex-wrap: wrap;
         }
-        .CardMusic.playing {
-            border-color: #ffd800;
-            box-shadow: 0 0 15px rgba(255, 216, 0, 0.5);
+        .spotlight-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex: 1;
+            min-width: 280px;
         }
-        .CardImage {
-            width: 170px;
-            height: 170px;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-        .CardImage img.CapaMusica {
-            width: 100%;
-            height: 100%;
-            margin: 0;
+        .spotlight-cover {
+            width: 135px;
+            height: 135px;
+            border-radius: 18px;
             object-fit: cover;
+            border: 2px solid #ffd800;
+            box-shadow: 0 10px 28px rgba(255, 216, 0, 0.25);
         }
-        .CardContent {
-            text-align: center;
-            margin-top: 8px;
-            width: 100%;
-        }
-        .NomeMusica {
-            font-size: 15px;
-            font-weight: bold;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .NomeArtista {
-            font-size: 13px;
-            color: #ccc;
-            margin-bottom: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .btn-open-song {
+        .spotlight-badge {
             display: inline-block;
+            background: rgba(255, 216, 0, 0.15);
+            color: #ffd800;
+            border: 1px solid rgba(255, 216, 0, 0.4);
+            padding: 4px 12px;
+            border-radius: 999px;
             font-size: 11px;
-            color: #131722 !important;
-            background-color: #ffd800;
-            padding: 4px 10px;
-            border-radius: 12px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .spotlight-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+            color: #fff;
+        }
+        .spotlight-artist {
+            font-size: 15px;
+            color: #ffd800;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .spotlight-bio {
+            font-size: 13px;
+            color: #cbd5e1;
+            max-width: 620px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .spotlight-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-spotlight-play {
+            background: linear-gradient(135deg, #ffd800 0%, #ff9d00 100%);
+            color: #0b0d14;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255, 216, 0, 0.35);
+            transition: transform 0.2s;
+        }
+        .btn-spotlight-play:hover {
+            transform: scale(1.04);
+        }
+        .btn-spotlight-secondary {
+            background: rgba(255, 255, 255, 0.07);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 13px;
             text-decoration: none;
-            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .btn-open-song:hover {
-            background-color: #ffea00;
+        .btn-spotlight-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
         }
-        .AudioMusica {
-            display: none;
+        .section-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 26px 36px 12px 116px;
+        }
+        .section-header-row h1 {
+            margin: 0;
+            font-size: 22px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-header-row h1 span {
+            color: #ffd800;
+        }
+        .carousel-nav-btns {
+            display: flex;
+            gap: 8px;
+        }
+        .carousel-arrow {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffd800;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-arrow:hover {
+            background: rgba(255, 216, 0, 0.2);
+        }
+        .scrollable-container {
+            margin-left: 116px !important;
+            max-width: calc(100% - 148px) !important;
+            padding: 8px 4px 18px 4px;
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -89,38 +175,77 @@
         <div id="parallax-container"></div>
     </header>
 
-    <div class="nomeCatalago">
-        <h1>Em Alta</h1>
+    <!-- Banner de Artista Indie em Destaque -->
+    <section class="indie-spotlight-banner" id="spotlightBanner">
+        <div class="spotlight-left">
+            <img id="spotlightCover" class="spotlight-cover" src="../../pictures/Capas/Capa01.webp" alt="Artista em Destaque">
+            <div>
+                <span class="spotlight-badge">🐝 Artista Indie em Destaque na Colmeia</span>
+                <h2 class="spotlight-title" id="spotlightTitle">Honeycomb Dreams</h2>
+                <div class="spotlight-artist" id="spotlightArtist">Luna & Os Polinizadores • 📍 São Paulo, SP</div>
+                <p class="spotlight-bio" id="spotlightBio">
+                    Banda independente de Dream Pop e Indie formada em garagens paulistanas, misturando sintetizadores quentes com letras poéticas.
+                </p>
+            </div>
+        </div>
+        <div class="spotlight-actions">
+            <button type="button" class="btn-spotlight-play" id="spotlightPlayBtn">▶ Ouvir Agora</button>
+            <a class="btn-spotlight-secondary" id="spotlightProfileBtn" href="telademusica.html?id=1">✨ Conhecer & Apoiar Artista</a>
+            <button type="button" class="btn-spotlight-secondary" onclick="openIndieSubmitModal()">🎸 Sou Artista Indie</button>
+        </div>
+    </section>
+
+    <div class="section-header-row">
+        <h1><span>🔥</span> Em Alta na Cena Indie</h1>
+        <div class="carousel-nav-btns">
+            <button class="carousel-arrow" onclick="scrollCarousel('container1', -440)">‹</button>
+            <button class="carousel-arrow" onclick="scrollCarousel('container1', 440)">›</button>
+        </div>
     </div>
     <div class="scrollable-container" id="container1"></div>
 
-    <div class="nomeCatalago">
-        <h1>Recomendados</h1>
+    <div class="section-header-row">
+        <h1><span>🍯</span> Descobertas Recomendadas da Colmeia</h1>
+        <div class="carousel-nav-btns">
+            <button class="carousel-arrow" onclick="scrollCarousel('container2', -440)">‹</button>
+            <button class="carousel-arrow" onclick="scrollCarousel('container2', 440)">›</button>
+        </div>
     </div>
     <div class="scrollable-container" id="container2"></div>
 
-    <div class="nomeCatalago">
-        <h1>Ouvidas Recentemente</h1>
+    <div class="section-header-row">
+        <h1><span>🎧</span> Lançamentos & Ouvidas Recentemente</h1>
+        <div class="carousel-nav-btns">
+            <button class="carousel-arrow" onclick="scrollCarousel('container3', -440)">‹</button>
+            <button class="carousel-arrow" onclick="scrollCarousel('container3', 440)">›</button>
+        </div>
     </div>
     <div class="scrollable-container" id="container3"></div>
 
     <script>
+        function scrollCarousel(id, delta) {
+            const el = document.getElementById(id);
+            if (el) el.scrollBy({ left: delta, behavior: 'smooth' });
+        }
+
         function renderSongCard(container, song) {
             const card = document.createElement('div');
             card.className = 'CardMusic';
             card.dataset.songId = song.id;
             card.innerHTML = `
                 <div class="CardImage">
+                    <span class="card-genre-pill">${song.genre || 'Indie'}</span>
                     <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}" draggable="false">
+                    <div class="card-play-fab">▶</div>
                 </div>
                 <div class="CardContent">
                     <div class="NomeMusica" title="${song.title}"><b>${song.title}</b></div>
                     <div class="NomeArtista" title="${song.artist}">${song.artist}</div>
-                    <a class="btn-open-song" href="telademusica.html?id=${song.id}">▶ Detalhes</a>
+                    <div class="card-footer-row">
+                        <span class="card-plays-count">🐝 ${song.plays || 120} plays</span>
+                        <a class="btn-open-song" href="telademusica.html?id=${song.id}">Artista →</a>
+                    </div>
                 </div>
-                <audio class="AudioMusica">
-                    <source src="${song.audio_url}" type="audio/mpeg">
-                </audio>
             `;
             card.addEventListener('click', (e) => {
                 if (card.dataset.dragged === 'true') return;
@@ -169,15 +294,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Importar o menu do módulo
             fetch('../../modules/elements/menu.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('menu-container').innerHTML = data;
+                    if (window.highlightActiveMenu) highlightActiveMenu();
                 })
                 .catch(error => console.error('Erro ao carregar o menu:', error));
 
-            // Importar o parallax do módulo
             fetch('../../modules/elements/paralax.html')
                 .then(response => response.text())
                 .then(data => {
@@ -195,8 +319,21 @@
                 })
                 .catch(error => console.error('Erro ao carregar o parallax:', error));
 
-            // Carregar músicas do Banco de Dados SQLite (com fallback automático)
             const allSongs = await NectarAPI.getSongs();
+
+            // Preencher Banner de Destaque com o primeiro artista spotlight
+            const spotlight = allSongs.find(s => s.is_indie_spotlight) || allSongs[0];
+            if (spotlight) {
+                document.getElementById('spotlightCover').src = spotlight.cover_url;
+                document.getElementById('spotlightTitle').textContent = spotlight.title;
+                document.getElementById('spotlightArtist').textContent = `${spotlight.artist} • 📍 ${spotlight.artist_city || 'Cena Indie Brasil'} (${spotlight.genre || 'Indie'})`;
+                document.getElementById('spotlightBio').textContent = spotlight.artist_bio || 'Artista independente em destaque na Colmeia.';
+                document.getElementById('spotlightProfileBtn').href = `telademusica.html?id=${spotlight.id}`;
+                document.getElementById('spotlightPlayBtn').onclick = () => {
+                    updateMiniPlayerSong(spotlight, true);
+                };
+            }
+
             const emAlta = allSongs.filter(s => s.category === 'em_alta');
             const recomendados = allSongs.filter(s => s.category === 'recomendados');
             const recentes = allSongs.filter(s => s.category === 'recentes');

@@ -1,5 +1,5 @@
 -- ============================================================================
--- NectarNotes - Esquema do Banco de Dados (SQLite)
+-- NectarNotes - Esquema do Banco de Dados (SQLite) + Vitrine de Artistas Indies
 -- ============================================================================
 
 PRAGMA foreign_keys = ON;
@@ -10,26 +10,34 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    bio TEXT DEFAULT 'Explorando a colmeia de melodias no NectarNotes 🐝',
+    bio TEXT DEFAULT 'Polinizador de músicas independentes no NectarNotes 🐝',
     country TEXT DEFAULT 'brasil',
     profile_pic TEXT DEFAULT '/pictures/icons/profile.png',
     banner_color TEXT DEFAULT '#fbff00',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Tabela de Músicas
+-- 2. Tabela de Músicas e Divulgação de Artistas Indies
 CREATE TABLE IF NOT EXISTS songs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     artist TEXT NOT NULL,
-    album TEXT DEFAULT 'Colmeia Hits',
-    genre TEXT DEFAULT 'Pop',
+    album TEXT DEFAULT 'Cena Indie Colmeia',
+    genre TEXT DEFAULT 'Indie',
     duration TEXT DEFAULT '3:45',
-    release_year INTEGER DEFAULT 2024,
+    release_year INTEGER DEFAULT 2026,
     cover_url TEXT NOT NULL,
     audio_url TEXT NOT NULL DEFAULT '/audios/audio1.mp3',
     category TEXT DEFAULT 'em_alta', -- 'em_alta', 'recomendados', 'recentes'
     plays INTEGER DEFAULT 0,
+    artist_bio TEXT DEFAULT 'Artista independente da cena autoral brasileira, trazendo sonoridades autênticas para a Colmeia.',
+    artist_city TEXT DEFAULT 'São Paulo, SP',
+    instagram_url TEXT DEFAULT 'https://instagram.com',
+    spotify_url TEXT DEFAULT 'https://open.spotify.com',
+    soundcloud_url TEXT DEFAULT 'https://soundcloud.com',
+    youtube_url TEXT DEFAULT 'https://youtube.com',
+    support_link TEXT DEFAULT 'https://apoia.se',
+    is_indie_spotlight INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -77,9 +85,9 @@ CREATE TABLE IF NOT EXISTS pet_items (
 CREATE TABLE IF NOT EXISTS pets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL UNIQUE,
-    name TEXT NOT NULL DEFAULT 'Abelhinha Mel',
+    name TEXT NOT NULL DEFAULT 'Buzzy Mel',
     xp INTEGER NOT NULL DEFAULT 55,
-    level INTEGER NOT NULL DEFAULT 1,
+    level INTEGER NOT NULL DEFAULT 2,
     photo_url TEXT NOT NULL DEFAULT '/pictures/FotosPets/FotoPet01.jpg',
     equipped_shirt_id INTEGER,
     equipped_face_id INTEGER,

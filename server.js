@@ -38,7 +38,7 @@ function parseBody(req) {
         let body = '';
         req.on('data', chunk => {
             body += chunk;
-            if (body.length > 10 * 1024 * 1024) {
+            if (body.length > 12 * 1024 * 1024) {
                 reject(new Error('Payload too large'));
             }
         });
@@ -102,7 +102,6 @@ async function handleApi(req, res, pathname, searchParams) {
         }
         let user = db.prepare('SELECT * FROM users WHERE username = ? OR email = ?').get(username.trim(), username.trim());
         if (!user) {
-            // Se o usuário ainda não existir no banco, cria automaticamente para facilitar testes escolares
             const email = username.includes('@') ? username.trim() : `${username.trim().toLowerCase().replace(/\s+/g, '')}@nectarnotes.com`;
             const info = db.prepare(`
                 INSERT INTO users (username, email, password_hash)
@@ -166,34 +165,90 @@ async function handleApi(req, res, pathname, searchParams) {
         }
     }
 
-    // GET /api/songs
-    if (pathname === '/api/songs' && req.method === 'GET') {
-        const category = searchParams.get('category');
-        const search = searchParams.get('search');
-        const userId = Number(searchParams.get('userId') || 1);
+    // GET / POST /api/songs
+    if (pathname === '/api/songs') {
+        if (req.method === 'GET') {
+            const category = searchParams.get('category');
+            const search = searchParams.get('search');
+            const genre = searchParams.get('genre');
+            const userId = Number(searchParams.get('userId') || 1);
 
-        let query = `
-            SELECT s.*,
-                   CASE WHEN ls.user_id IS NOT NULL THEN 1 ELSE 0 END AS liked
-            FROM songs s
-            LEFT JOIN liked_songs ls ON ls.song_id = s.id AND ls.user_id = ?
-            WHERE 1=1
-        `;
-        const params = [userId];
+            let query = `
+                SELECT s.*,
+                       CASE WHEN ls.user_id IS NOT NULL THEN 1 ELSE 0 END AS liked
+                FROM songs s
+                LEFT JOIN liked_songs ls ON ls.song_id = s.id AND ls.user_id = ?
+                WHERE 1=1
+            `;
+            const params = [userId];
 
-        if (category) {
-            query += ' AND s.category = ?';
-            params.push(category);
+            if (category) {
+                query += ' AND s.category = ?';
+                params.push(category);
+            }
+            if (genre) {
+                query += ' AND s.genre LIKE ?';
+                params.push(`%${genre.trim()}%`);
+            }
+            if (search) {
+                query += ' AND (s.title LIKE ? OR s.artist LIKE ? OR s.genre LIKE ? OR s.album LIKE ? OR s.artist_city LIKE ?)';
+                const term = `%${search.trim()}%`;
+                params.push(term, term, term, term, term);
+            }
+            query += ' ORDER BY s.is_indie_spotlight DESC, s.plays DESC, s.id ASC';
+
+            const songs = db.prepare(query).all(...params);
+            return sendJson(res, 200, songs);
         }
-        if (search) {
-            query += ' AND (s.title LIKE ? OR s.artist LIKE ? OR s.genre LIKE ? OR s.album LIKE ?)';
-            const term = `%${search.trim()}%`;
-            params.push(term, term, term, term);
-        }
-        query += ' ORDER BY s.id ASC';
 
-        const songs = db.prepare(query).all(...params);
-        return sendJson(res, 200, songs);
+        if (req.method === 'POST') {
+            const body = await parseBody(req);
+            const {
+                title,
+                artist,
+                genre = 'Indie',
+                artist_city = 'Brasil',
+                artist_bio = 'Artista independente divulgado na Colmeia NectarNotes.',
+                instagram_url = 'https://instagram.com',
+                spotify_url = 'https://open.spotify.com',
+                soundcloud_url = 'https://soundcloud.com',
+                youtube_url = 'https://youtube.com',
+                support_link = 'https://apoia.se',
+                cover_url = '/pictures/Capas/Capa01.webp',
+                audio_url = '/audios/audio1.mp3',
+                category = 'em_alta'
+            } = body;
+
+            if (!title || !artist) {
+                return sendJson(res, 400, { error: 'Informe o nome da música e do artista indie.' });
+            }
+
+            const info = db.prepare(`
+                INSERT INTO songs (
+                    title, artist, album, genre, duration, release_year,
+                    cover_url, audio_url, category, plays,
+                    artist_bio, artist_city, instagram_url, spotify_url, soundcloud_url, youtube_url, support_link, is_indie_spotlight
+                ) VALUES (?, ?, ?, ?, '3:30', 2026, ?, ?, ?, 50, ?, ?, ?, ?, ?, ?, ?, 1)
+            `).run(
+                title.trim(),
+                artist.trim(),
+                'Single Independente',
+                genre.trim(),
+                cover_url,
+                audio_url,
+                category,
+                artist_bio.trim(),
+                artist_city.trim(),
+                instagram_url.trim(),
+                spotify_url.trim(),
+                soundcloud_url.trim(),
+                youtube_url.trim(),
+                support_link.trim()
+            );
+
+            const newSong = db.prepare('SELECT * FROM songs WHERE id = ?').get(Number(info.lastInsertRowid));
+            return sendJson(res, 201, newSong);
+        }
     }
 
     // GET /api/songs/:id
@@ -224,8 +279,18 @@ async function handleApi(req, res, pathname, searchParams) {
             return sendJson(res, 200, { liked: false });
         } else {
             db.prepare('INSERT OR IGNORE INTO liked_songs (user_id, song_id) VALUES (?, ?)').run(userId, songId);
+            db.prepare('UPDATE songs SET plays = plays + 5 WHERE id = ?').run(songId);
             return sendJson(res, 200, { liked: true });
         }
+    }
+
+    // POST /api/songs/:id/play
+    const playMatch = pathname.match(/^\/api\/songs\/(\d+)\/play$/);
+    if (playMatch && req.method === 'POST') {
+        const songId = Number(playMatch[1]);
+        db.prepare('UPDATE songs SET plays = plays + 1 WHERE id = ?').run(songId);
+        const updated = db.prepare('SELECT plays FROM songs WHERE id = ?').get(songId);
+        return sendJson(res, 200, { plays: updated ? updated.plays : 1 });
     }
 
     // GET / POST /api/playlists
@@ -245,7 +310,6 @@ async function handleApi(req, res, pathname, searchParams) {
                 songs: getSongs.all(p.id)
             }));
 
-            // Adicionar também a playlist especial de Músicas Curtidas ("Minha Colmeia")
             const likedSongs = db.prepare(`
                 SELECT s.* FROM songs s
                 INNER JOIN liked_songs ls ON ls.song_id = s.id
@@ -257,8 +321,8 @@ async function handleApi(req, res, pathname, searchParams) {
                 result.unshift({
                     id: 'liked',
                     user_id: userId,
-                    name: 'Minha Colmeia (Curtidas)',
-                    description: 'Músicas marcadas com coração',
+                    name: 'Minha Colmeia (Favoritas)',
+                    description: 'Músicas independentes que você polinizou com ❤️',
                     songs: likedSongs
                 });
             }
@@ -278,7 +342,7 @@ async function handleApi(req, res, pathname, searchParams) {
             );
             const playlistId = Number(info.lastInsertRowid);
             const insertSong = db.prepare('INSERT OR IGNORE INTO playlist_songs (playlist_id, song_id, position) VALUES (?, ?, ?)');
-            const idsToInsert = songIds.length > 0 ? songIds : [1, 2, 3, 4];
+            const idsToInsert = songIds.length > 0 ? songIds : [1, 2, 4, 5];
             idsToInsert.forEach((sId, idx) => insertSong.run(playlistId, Number(sId), idx));
 
             const playlist = db.prepare('SELECT * FROM playlists WHERE id = ?').get(playlistId);
@@ -379,20 +443,13 @@ const server = http.createServer(async (req, res) => {
             pathname = '/index.html';
         }
 
-        // Resolver caminhos antigos quebrados caso algum link legado seja chamado
         const legacyRedirects = {
             '/Principal/principal.html': '/view/html/principal.html',
             '/Pesquisa/TelaPesquisa.html': '/view/html/TelaPesquisa.html',
             '/Album/MusicasSalvas.html': '/view/html/MusicasSalvas.html',
             '/Pets/TelaPets.html': '/view/html/TelaPets.html',
             '/perfil/TelaPerfil.html': '/view/html/TelaPerfil.html',
-            '/Configurações/TelaConfig.html': '/view/html/TelaConfig.html',
-            '/view/Principal/principal.html': '/view/html/principal.html',
-            '/view/Pesquisa/TelaPesquisa.html': '/view/html/TelaPesquisa.html',
-            '/view/Album/MusicasSalvas.html': '/view/html/MusicasSalvas.html',
-            '/view/Pets/TelaPets.html': '/view/html/TelaPets.html',
-            '/view/perfil/TelaPerfil.html': '/view/html/TelaPerfil.html',
-            '/view/Configurações/TelaConfig.html': '/view/html/TelaConfig.html'
+            '/Configurações/TelaConfig.html': '/view/html/TelaConfig.html'
         };
         if (legacyRedirects[pathname]) {
             res.writeHead(302, { Location: legacyRedirects[pathname] });

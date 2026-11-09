@@ -3,54 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Música - NectarNotes</title>
+    <title>Vitrine do Artista Indie - NectarNotes</title>
     <link rel="stylesheet" href="../css/ifrmaedatelademusica.css">
+    <link rel="stylesheet" href="../css/design-system.css">
     <script src="../js/script.js"></script>
+    <style>
+        body {
+            background: transparent !important;
+            padding-bottom: 10px !important;
+        }
+        .container {
+            max-width: 640px;
+            margin: 12px auto;
+            padding: 24px;
+            background: rgba(20, 24, 41, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 216, 0, 0.22);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+        }
+        .music-cover img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 216, 0, 0.5);
+            box-shadow: 0 12px 32px rgba(255, 216, 0, 0.2);
+            margin-bottom: 12px;
+        }
+        .indie-badges-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+        .indie-pill {
+            background: rgba(255, 216, 0, 0.14);
+            border: 1px solid rgba(255, 216, 0, 0.35);
+            color: #ffd800;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+        .artist-showcase-card {
+            background: rgba(13, 16, 29, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 18px;
+            margin-top: 16px;
+            width: 100%;
+            text-align: left;
+        }
+        .artist-showcase-card h3 {
+            margin: 0 0 8px 0;
+            color: #ffd800;
+            font-size: 16px;
+        }
+        .artist-bio-text {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin: 0 0 14px 0;
+        }
+        .social-links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 13px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .social-btn:hover {
+            background: rgba(255, 216, 0, 0.2);
+            border-color: #ffd800;
+            transform: translateY(-2px);
+        }
+        .social-btn.gold {
+            background: linear-gradient(135deg, #ffd800 0%, #ff9d00 100%);
+            color: #0b0d14;
+            border: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div class="music-frame">
+        <div class="music-frame" style="padding: 8px;">
             <div class="music-cover">
-                <img id="songCover" src="../../pictures/Capas/Capa01.webp" alt="Capa da Música" style="border-radius: 12px; width: 280px; height: 280px; object-fit: cover;">
+                <img id="songCover" src="../../pictures/Capas/Capa01.webp" alt="Capa da Música">
             </div>
-            <h2 id="songTitle" style="margin: 5px 0 15px 0; color: #ffd800;">Honeycomb Dreams</h2>
 
-            <input
-                value="favorite-button"
-                name="favorite-checkbox"
-                id="favorite"
-                type="checkbox"
-            />
-            <label class="container-1" for="favorite">
-                <svg
-                    class="feather feather-heart"
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    height="24"
-                    width="24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-                <div class="action">
-                    <span class="option-1">Adicionar à Colmeia</span>
-                    <span class="option-2">Adicionado à Colmeia</span>
+            <h2 id="songTitle" style="margin: 2px 0 4px 0; color: #fff; font-size: 24px;">Honeycomb Dreams</h2>
+            <div id="songArtistHeader" style="color: #ffd800; font-weight: 700; font-size: 15px; margin-bottom: 10px;">Luna & Os Polinizadores</div>
+
+            <div class="indie-badges-row">
+                <span class="indie-pill" id="songGenreBadge">🎸 Indie Pop</span>
+                <span class="indie-pill" id="songCityBadge">📍 São Paulo, SP</span>
+                <span class="indie-pill" id="songPlaysBadge">🐝 320 plays</span>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; justify-content: center;">
+                <input value="favorite-button" name="favorite-checkbox" id="favorite" type="checkbox" />
+                <label class="container-1" for="favorite" style="margin-bottom: 0;">
+                    <svg class="feather feather-heart" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="none" viewBox="0 0 24 24" height="22" width="22" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <div class="action">
+                        <span class="option-1">Polinizar na Colmeia</span>
+                        <span class="option-2">Polinizado na Colmeia ❤️</span>
+                    </div>
+                </label>
+
+                <button type="button" class="social-btn gold" id="btnShareTrack" style="height: 44px; border-radius: 10px;">
+                    🔗 Compartilhar Faixa
+                </button>
+            </div>
+
+            <div class="music-player" style="width: 100%; margin-bottom: 6px;">
+                <audio id="songAudio" src="../../audios/audio1.mp3" controls style="width: 100%; height: 40px;"></audio>
+            </div>
+
+            <!-- Vitrine de Divulgação do Artista Indie -->
+            <div class="artist-showcase-card">
+                <h3>🐝 Sobre o Artista Independente</h3>
+                <p class="artist-bio-text" id="songBioText">
+                    Banda independente de Dream Pop e Indie formada em garagens paulistanas, misturando sintetizadores quentes com letras poéticas.
+                </p>
+                <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">
+                    Álbum/Selo: <b id="songAlbum" style="color: #fff;">Cena Indie Vol. 1</b> • Duração: <b id="songDuration" style="color: #fff;">3:15</b> • Ano: <b id="songYear" style="color: #fff;">2026</b>
                 </div>
-            </label>
-
-            <div class="music-player">
-                <audio id="songAudio" src="../../audios/audio1.mp3" controls></audio>
-            </div>
-
-            <div class="music-info">
-                <p id="songArtist">Autor: Queen Bee</p>
-                <p id="songDuration">Duração: 3:45</p>
-                <p id="songYear">Lançamento: 2024</p>
-                <p id="songGenre">Gênero: Pop</p>
+                <div class="social-links-grid">
+                    <a id="linkInsta" href="https://instagram.com" target="_blank" rel="noopener" class="social-btn">📸 Instagram</a>
+                    <a id="linkSpotify" href="https://open.spotify.com" target="_blank" rel="noopener" class="social-btn">🎧 Spotify</a>
+                    <a id="linkSoundcloud" href="https://soundcloud.com" target="_blank" rel="noopener" class="social-btn">☁️ SoundCloud</a>
+                    <a id="linkYoutube" href="https://youtube.com" target="_blank" rel="noopener" class="social-btn">▶️ YouTube</a>
+                    <a id="linkSupport" href="https://apoia.se" target="_blank" rel="noopener" class="social-btn gold">🍯 Apoiar Artista</a>
+                </div>
             </div>
         </div>
     </div>
@@ -64,10 +165,20 @@
             if (song) {
                 document.getElementById('songCover').src = song.cover_url;
                 document.getElementById('songTitle').textContent = song.title;
-                document.getElementById('songArtist').textContent = 'Autor: ' + song.artist;
-                document.getElementById('songDuration').textContent = 'Duração: ' + (song.duration || '3:45');
-                document.getElementById('songYear').textContent = 'Lançamento: ' + (song.release_year || 2024);
-                document.getElementById('songGenre').textContent = 'Gênero: ' + (song.genre || 'Pop');
+                document.getElementById('songArtistHeader').textContent = song.artist;
+                document.getElementById('songGenreBadge').textContent = '🎸 ' + (song.genre || 'Indie');
+                document.getElementById('songCityBadge').textContent = '📍 ' + (song.artist_city || 'Cena Indie Brasil');
+                document.getElementById('songPlaysBadge').textContent = `🐝 ${song.plays || 120} plays`;
+                document.getElementById('songBioText').textContent = song.artist_bio || 'Artista independente em destaque na Colmeia NectarNotes.';
+                document.getElementById('songAlbum').textContent = song.album || 'Single Independente';
+                document.getElementById('songDuration').textContent = song.duration || '3:30';
+                document.getElementById('songYear').textContent = song.release_year || 2026;
+
+                document.getElementById('linkInsta').href = song.instagram_url || 'https://instagram.com';
+                document.getElementById('linkSpotify').href = song.spotify_url || 'https://open.spotify.com';
+                document.getElementById('linkSoundcloud').href = song.soundcloud_url || 'https://soundcloud.com';
+                document.getElementById('linkYoutube').href = song.youtube_url || 'https://youtube.com';
+                document.getElementById('linkSupport').href = song.support_link || 'https://apoia.se';
 
                 const audioEl = document.getElementById('songAudio');
                 audioEl.src = song.audio_url;
@@ -78,6 +189,14 @@
                 favCheckbox.addEventListener('change', async () => {
                     const result = await NectarAPI.toggleLikeSong(song.id);
                     favCheckbox.checked = Boolean(result.liked);
+                });
+
+                document.getElementById('btnShareTrack').addEventListener('click', () => {
+                    const url = new URL(`telademusica.html?id=${song.id}`, window.location.href).href;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(url).catch(() => {});
+                    }
+                    showNectarToast(`🔗 Link de "${song.title}" (${song.artist}) copiado para divulgar!`);
                 });
             }
         });

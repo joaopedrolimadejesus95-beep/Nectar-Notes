@@ -6,42 +6,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/Pets.css">
+    <link rel="stylesheet" href="../css/design-system.css">
     <script src="../js/script.js"></script>
-    <title>Pets - NectarNotes</title>
+    <title>Mascote Pet da Colmeia - NectarNotes</title>
     <style>
+        body {
+            background: linear-gradient(135deg, #ffd800 0%, #ffb700 100%) !important;
+            color: #0b0d14;
+        }
+        .pets-layout {
+            margin-left: 116px;
+            margin-right: 32px;
+            padding-top: 28px;
+            display: grid;
+            grid-template-columns: 310px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        .pet-status-card {
+            background: rgba(13, 15, 25, 0.92);
+            color: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+            border: 2px solid rgba(255, 216, 0, 0.5);
+            text-align: center;
+        }
+        .pet-status-card h1 {
+            margin: 0 0 8px 0;
+            color: #ffd800;
+            font-size: 26px;
+        }
+        #ImgPet {
+            width: 230px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 18px;
+            border: 3px solid #ffd800;
+            margin: 12px auto;
+            display: block;
+        }
+        .xpBar {
+            width: 100%;
+            height: 28px;
+            background: #1a1f35;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 216, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .xpProgress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #84cc16, #22c55e);
+            border-radius: 999px;
+            transition: width 0.35s ease;
+        }
+        #xpNivel {
+            position: relative;
+            z-index: 2;
+            margin: 0;
+            line-height: 28px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-align: center;
+            width: 100%;
+        }
+        .wardrobe-card {
+            background: rgba(13, 15, 25, 0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 28px;
+            color: #fff;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
         .song {
+            width: 155px;
+            height: 155px;
+            margin: 8px;
+            background: #fff;
+            border-radius: 18px;
             cursor: pointer;
             position: relative;
             transition: transform 0.2s, box-shadow 0.2s;
-            border: 3px solid transparent;
+            border: 4px solid transparent;
+            overflow: hidden;
         }
         .song:hover {
-            transform: scale(1.06);
+            transform: translateY(-4px) scale(1.04);
         }
         .song.equipped {
-            border-color: #0d0d17;
-            box-shadow: 0 0 15px rgba(13, 13, 23, 0.8);
+            border-color: #ffd800;
+            box-shadow: 0 0 22px rgba(255, 216, 0, 0.75);
         }
-        .pet-equipped-badge {
-            background-color: #0d0d17;
-            color: #ffd800;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 14px;
-            width: 216px;
-            box-sizing: border-box;
-        }
-        .btn-rename-pet {
-            background-color: #0d0d17;
-            color: #ffd800;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 10px;
-            width: fit-content;
+        @media (max-width: 900px) {
+            .pets-layout {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -53,6 +119,7 @@
             <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
             <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
             <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
                 <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
@@ -61,43 +128,62 @@
         </ul>
     </div>
 
-    <div class="MeuPet" style="color: #0d0d17;">
-        <h1 id="petNameDisplay">Buzzy Mel</h1>
-        <button class="btn-rename-pet" onclick="renamePet()">✏️ Renomear Pet</button>
-        <div class="xpBar">
-            <div class="xpProgress" id="xpProgressBar"><p id="xpNivel">XP: 55 (Nível 2)</p></div>
+    <div class="pets-layout">
+        <div class="pet-status-card">
+            <span style="font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Mascote Polinizador</span>
+            <h1 id="petNameDisplay">Buzzy Mel</h1>
+            <button type="button" onclick="openRenameModal()" style="background: rgba(255, 216, 0, 0.16); color: #ffd800; border: 1px solid rgba(255, 216, 0, 0.4); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 12px; font-weight: 700;">
+                ✏️ Renomear Mascote
+            </button>
+
+            <div class="xpBar">
+                <div class="xpProgress" id="xpProgressBar"></div>
+                <p id="xpNivel">XP: 55 (Nível 2)</p>
+            </div>
+
+            <img id="ImgPet" src="../../pictures/FotosPets/FotoPet01.jpg" alt="Imagem Pet">
+
+            <div style="background: rgba(255,255,255,0.06); padding: 12px; border-radius: 14px; text-align: left; font-size: 13px;">
+                <div>👕 <b>Camisa:</b> <span id="eqShirtName" style="color: #ffd800;">Nenhuma</span></div>
+                <div style="margin-top: 6px;">🕶️ <b>Acessório:</b> <span id="eqFaceName" style="color: #ffd800;">Nenhum</span></div>
+            </div>
         </div>
-        <img id="ImgPet" src="../../pictures/FotosPets/FotoPet01.jpg" alt="Imagem Pet" style="border-radius: 16px; object-fit: cover;">
-        <div class="pet-equipped-badge" id="equippedStatus">
-            <div>👕 Camisa: <span id="eqShirtName">Nenhuma</span></div>
-            <div style="margin-top: 4px;">🕶️ Rosto: <span id="eqFaceName">Nenhum</span></div>
+
+        <div class="wardrobe-card">
+            <h2 style="margin-top: 0; color: #ffd800;">👕 Guarda-Roupa de Festival Indie (Clique para equipar e ganhar +XP)</h2>
+            <div id="shirtsContainer"></div>
+
+            <h2 style="margin-top: 24px; color: #ffd800;">🕶️ Acessórios de Rosto & Estilo</h2>
+            <div id="facesContainer"></div>
         </div>
     </div>
 
-    <div class="scrollable-container" id="container1" style="color: #0d0d17;">
-        <div class="nomeCatalago">
-            <h1>Camisas (Clique para equipar e ganhar XP)</h1>
+    <dialog id="renamePetDialog" class="nectar-modal">
+        <div class="modal-header">
+            <h2>🐝 Renomear Mascote</h2>
+            <button type="button" class="modal-close" onclick="document.getElementById('renamePetDialog').close()">✕</button>
         </div>
-        <div id="shirtsContainer"></div>
-
-        <div class="nomeCatalago">
-            <h1>Rosto e Acessórios</h1>
-        </div>
-        <div id="facesContainer"></div>
-    </div>
+        <form id="renamePetForm">
+            <div class="nectar-form-group">
+                <label>Novo Nome do Pet</label>
+                <input type="text" id="newPetNameInput" placeholder="Ex: Buzzy Indie" required>
+            </div>
+            <button type="submit" class="btn-primary-nectar">Salvar Nome</button>
+        </form>
+    </dialog>
 
     <script>
         const DEFAULT_ITEMS = [
-            { id: 1, name: 'Camiseta Azul', category: 'camisa', image_url: 'https://img.freepik.com/vetores-gratis/desenho-de-adesivo-com-camiseta-azul-isolada_1308-79625.jpg' },
-            { id: 2, name: 'Camiseta Vermelha', category: 'camisa', image_url: 'https://static.vecteezy.com/system/resources/previews/003/532/204/non_2x/sticker-design-with-red-t-shirt-isolated-free-vector.jpg' },
-            { id: 3, name: 'Camiseta Branca', category: 'camisa', image_url: 'https://static.vecteezy.com/system/resources/thumbnails/006/034/398/small_2x/sticker-white-t-shirt-with-coathanger-free-vector.jpg' },
+            { id: 1, name: 'Camiseta Azul Indie', category: 'camisa', image_url: 'https://img.freepik.com/vetores-gratis/desenho-de-adesivo-com-camiseta-azul-isolada_1308-79625.jpg' },
+            { id: 2, name: 'Camiseta Vermelha Tour', category: 'camisa', image_url: 'https://static.vecteezy.com/system/resources/previews/003/532/204/non_2x/sticker-design-with-red-t-shirt-isolated-free-vector.jpg' },
+            { id: 3, name: 'Camiseta Studio Branca', category: 'camisa', image_url: 'https://static.vecteezy.com/system/resources/thumbnails/006/034/398/small_2x/sticker-white-t-shirt-with-coathanger-free-vector.jpg' },
             { id: 4, name: 'Moletom Colmeia', category: 'camisa', image_url: 'https://th.bing.com/th/id/OIP.UL742fzpgA2pX35cdY-MgAHaHa?rs=1&pid=ImgDetMain' },
-            { id: 5, name: 'Jaqueta Dourada', category: 'camisa', image_url: 'https://th.bing.com/th/id/OIP.WlR4JaP6HPBjIfmq0pQ9LwHaGG?rs=1&pid=ImgDetMain' },
-            { id: 6, name: 'Camisa Vasco', category: 'camisa', image_url: 'https://static.shopvasco.com.br/produtos/camiseta-infantil-vasco-da-gama-recorte/06/425-8912-006/425-8912-006_zoom1.jpg?ts=1581420023&ims=1088x' },
-            { id: 7, name: 'Manto Real', category: 'camisa', image_url: 'https://thumbs.dreamstime.com/z/composi%C3%A7%C3%A3o-realista-do-rei-cloak-manto-com-imagem-vestido-monarca-o-cetro-vermelho-real-e-ilustra%C3%A7%C3%A3o-vetor-de-bola-200482946.jpg' },
-            { id: 8, name: 'Óculos Escuros', category: 'rosto', image_url: 'https://prints.ultracoloringpages.com/b052c464fc36c37388dfbe6082288d3d.png' },
-            { id: 9, name: 'Óculos Cool', category: 'rosto', image_url: 'https://th.bing.com/th/id/OIP.ylbodItlJPFQym6zWriM7QHaHa?rs=1&pid=ImgDetMain' },
-            { id: 10, name: 'Coroa de Abelha', category: 'rosto', image_url: 'https://th.bing.com/th/id/OIP.NT-IKq8OjQHsY5cWkk9o-AHaHa?rs=1&pid=ImgDetMain' }
+            { id: 5, name: 'Jaqueta Néctar Dourada', category: 'camisa', image_url: 'https://th.bing.com/th/id/OIP.WlR4JaP6HPBjIfmq0pQ9LwHaGG?rs=1&pid=ImgDetMain' },
+            { id: 6, name: 'Camisa Clássica Vasco', category: 'camisa', image_url: 'https://static.shopvasco.com.br/produtos/camiseta-infantil-vasco-da-gama-recorte/06/425-8912-006/425-8912-006_zoom1.jpg?ts=1581420023&ims=1088x' },
+            { id: 7, name: 'Manto Rei da Colmeia', category: 'camisa', image_url: 'https://thumbs.dreamstime.com/z/composi%C3%A7%C3%A3o-realista-do-rei-cloak-manto-com-imagem-vestido-monarca-o-cetro-vermelho-real-e-ilustra%C3%A7%C3%A3o-vetor-de-bola-200482946.jpg' },
+            { id: 8, name: 'Óculos Indie Escuros', category: 'rosto', image_url: 'https://prints.ultracoloringpages.com/b052c464fc36c37388dfbe6082288d3d.png' },
+            { id: 9, name: 'Óculos Festival', category: 'rosto', image_url: 'https://th.bing.com/th/id/OIP.ylbodItlJPFQym6zWriM7QHaHa?rs=1&pid=ImgDetMain' },
+            { id: 10, name: 'Coroa Real de Mel', category: 'rosto', image_url: 'https://th.bing.com/th/id/OIP.NT-IKq8OjQHsY5cWkk9o-AHaHa?rs=1&pid=ImgDetMain' }
         ];
 
         let currentPet = { name: 'Buzzy Mel', xp: 55, level: 2, equipped_shirt_id: null, equipped_face_id: null };
@@ -120,10 +206,10 @@
             document.getElementById('petNameDisplay').textContent = currentPet.name || 'Buzzy Mel';
             const xp = currentPet.xp || 55;
             const level = currentPet.level || (Math.floor(xp / 50) + 1);
-            document.getElementById('xpNivel').textContent = `XP: ${xp} (Nível ${level})`;
+            document.getElementById('xpNivel').textContent = `XP: ${xp} • Nível ${level}`;
 
-            const progressInLevel = ((xp % 50) / 50) * 216;
-            document.getElementById('xpProgressBar').style.width = `${Math.max(60, Math.min(216, progressInLevel))}px`;
+            const pct = Math.max(18, Math.min(100, ((xp % 50) / 50) * 100));
+            document.getElementById('xpProgressBar').style.width = `${pct}%`;
 
             const shirtObj = petItems.find(i => i.id === currentPet.equipped_shirt_id);
             const faceObj = petItems.find(i => i.id === currentPet.equipped_face_id);
@@ -139,7 +225,7 @@
                 const div = document.createElement('div');
                 const isEquipped = item.id === currentPet.equipped_shirt_id || item.id === currentPet.equipped_face_id;
                 div.className = 'song' + (isEquipped ? ' equipped' : '');
-                div.title = `${item.name} (Clique para equipar)`;
+                div.title = `${item.name}`;
                 div.innerHTML = `<img src="${item.image_url}" alt="${item.name}">`;
                 div.addEventListener('click', () => equipItem(item));
 
@@ -163,6 +249,7 @@
                     const data = await res.json();
                     currentPet = data.pet;
                     renderPetUI();
+                    showNectarToast(`🐝 Item "${item.name}" atualizado! (+XP)`);
                     return;
                 }
             } catch (_) {}
@@ -175,28 +262,40 @@
             currentPet.xp = (currentPet.xp || 55) + 15;
             currentPet.level = Math.floor(currentPet.xp / 50) + 1;
             renderPetUI();
+            showNectarToast(`🐝 Item "${item.name}" atualizado! (+15 XP)`);
         }
 
-        async function renamePet() {
-            const newName = prompt('Digite o novo nome do seu Pet:', currentPet.name);
-            if (!newName || !newName.trim()) return;
+        function openRenameModal() {
+            const dlg = document.getElementById('renamePetDialog');
+            document.getElementById('newPetNameInput').value = currentPet.name || 'Buzzy Mel';
+            dlg.showModal();
+        }
+
+        document.getElementById('renamePetForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newName = document.getElementById('newPetNameInput').value.trim();
+            document.getElementById('renamePetDialog').close();
+            if (!newName) return;
+
             const userId = NectarAPI.getCurrentUserId();
             try {
                 const res = await fetch(`/api/pets/${userId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: newName.trim() })
+                    body: JSON.stringify({ name: newName })
                 });
                 if (res.ok) {
                     const data = await res.json();
                     currentPet = data.pet;
                     renderPetUI();
+                    showNectarToast(`🐝 Nome atualizado para "${newName}"!`);
                     return;
                 }
             } catch (_) {}
-            currentPet.name = newName.trim();
+            currentPet.name = newName;
             renderPetUI();
-        }
+            showNectarToast(`🐝 Nome atualizado para "${newName}"!`);
+        });
 
         document.addEventListener('DOMContentLoaded', loadPetData);
     </script>

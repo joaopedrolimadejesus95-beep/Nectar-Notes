@@ -3,59 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playlists Salvas - NectarNotes</title>
+    <title>Playlists Salvas & Colmeia - NectarNotes</title>
     <link rel="shortcut icon" type="image/png" href="../../pictures/others/logo.png">
     <link rel="stylesheet" href="../css/MusicasSalvas.css">
+    <link rel="stylesheet" href="../css/design-system.css">
     <script src="../js/script.js"></script>
     <style>
-        .playlist-container {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin-left: 20px;
+        body {
+            background-color: #0b0d14 !important;
+        }
+        .content {
+            margin-left: 116px !important;
+            width: calc(100% - 132px) !important;
+            padding: 24px !important;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(20, 24, 41, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 216, 0, 0.22);
+            border-radius: 20px;
+            padding: 24px 28px;
+        }
+        .playlist-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-left: 0;
+            margin-top: 24px;
+        }
+        .playlist-item {
+            width: 250px;
+            height: 265px;
+            background: rgba(22, 27, 44, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            transition: all 0.28s ease;
+        }
+        .playlist-item:hover {
+            transform: translateY(-6px);
+            border-color: #ffd800;
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 216, 0, 0.16);
         }
         .btn-new-playlist {
-            background-color: #ffd800;
-            color: #131722;
+            background: linear-gradient(135deg, #ffd800, #ff9d00);
+            color: #0b0d14;
             border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 800;
             cursor: pointer;
             font-size: 14px;
+            box-shadow: 0 6px 20px rgba(255, 216, 0, 0.3);
         }
-        .btn-new-playlist:hover {
-            background-color: #ffea00;
+        .side-panel {
+            background: rgba(15, 18, 30, 0.96);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 216, 0, 0.25);
+            width: 390px;
+            z-index: 1200;
         }
         .close-btn {
-            background-color: #dd3630;
+            background: rgba(255, 255, 255, 0.1);
             color: #fff;
             border: none;
-            border-radius: 6px;
-            padding: 6px 12px;
+            border-radius: 999px;
+            padding: 8px 16px;
             cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 14px;
         }
         .panel-song-row {
             display: flex;
             align-items: center;
             gap: 12px;
-            background-color: #252b3d;
-            padding: 8px 12px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 12px;
+            border-radius: 12px;
             margin-bottom: 10px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
         }
         .panel-song-row:hover {
-            background-color: #323952;
+            background: rgba(255, 216, 0, 0.12);
+            border-color: rgba(255, 216, 0, 0.35);
         }
     </style>
 </head>
@@ -66,6 +101,7 @@
             <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
             <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
             <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
                 <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
@@ -76,8 +112,11 @@
 
     <div class="content">
         <header class="header">
-            <h1>Playlists Salvas</h1>
-            <button class="btn-new-playlist" onclick="createNewPlaylist()">+ Nova Playlist</button>
+            <div>
+                <h1 style="font-size: 28px; margin-bottom: 4px;">🍯 Suas Playlists & Colmeia</h1>
+                <p style="margin: 0; color: #94a3b8; font-size: 14px;">Organize suas bandas indies favoritas e compartilhe com seus amigos</p>
+            </div>
+            <button class="btn-new-playlist" onclick="openNewPlaylistModal()">+ Criar Playlist</button>
         </header>
 
         <div class="playlist-container" id="playlistContainer"></div>
@@ -85,36 +124,61 @@
         <div class="overlay" onclick="closePanel()"></div>
 
         <div id="slide-panel" class="side-panel">
-            <button onclick="closePanel()" class="close-btn">✕ Fechar</button>
+            <button onclick="closePanel()" class="close-btn">✕ Fechar Painel</button>
             <div id="playlist-info" class="playlist-info">
                 <h2 id="playlist-title" style="color: #ffd800; margin-top: 0;">Título da Playlist</h2>
-                <p id="playlist-desc" style="color: #aaa; font-size: 14px; margin-top: -8px;"></p>
+                <p id="playlist-desc" style="color: #94a3b8; font-size: 13px; margin-top: -6px;"></p>
                 <div id="playlist-cover" class="playlist-cover"></div>
                 <div id="playlist-music-list" class="music-list"></div>
             </div>
         </div>
     </div>
 
+    <!-- Modal Moderno (<dialog>) para Criar Playlist -->
+    <dialog id="newPlaylistDialog" class="nectar-modal">
+        <div class="modal-header">
+            <h2>🎵 Criar Nova Playlist Indie</h2>
+            <button type="button" class="modal-close" onclick="document.getElementById('newPlaylistDialog').close()">✕</button>
+        </div>
+        <form id="newPlaylistForm">
+            <div class="nectar-form-group">
+                <label>Nome da Playlist *</label>
+                <input type="text" id="plNameInput" placeholder="Ex: bandas indies de amigos" required>
+            </div>
+            <div class="nectar-form-group">
+                <label>Descrição</label>
+                <input type="text" id="plDescInput" placeholder="Ex: Os melhores sons autorais da galera">
+            </div>
+            <button type="submit" class="btn-primary-nectar" style="margin-top: 10px;">Salvar Playlist no Banco</button>
+        </form>
+    </dialog>
+
     <script>
         let loadedPlaylists = [];
 
         const FALLBACK_PLAYLISTS = [
             {
-                id: 1,
-                name: 'Favoritas da Colmeia',
-                description: 'As mais tocadas na colmeia',
+                id: 'liked',
+                name: 'Minha Colmeia (Favoritas)',
+                description: 'Músicas independentes que você polinizou com ❤️',
                 songs: DEFAULT_SONGS_FALLBACK.slice(0, 6)
             },
             {
+                id: 1,
+                name: 'Destaques da Cena Indie',
+                description: 'Bandas e artistas independentes em alta na Colmeia',
+                songs: DEFAULT_SONGS_FALLBACK.slice(1, 7)
+            },
+            {
                 id: 2,
-                name: 'Vibe Néctar & Lo-Fi',
-                description: 'Para relaxar e estudar',
+                name: 'Bedroom Pop & Lo-Fi',
+                description: 'Produções caseiras para relaxar e estudar',
                 songs: DEFAULT_SONGS_FALLBACK.slice(4, 10)
             },
             {
                 id: 3,
-                name: 'Zumbido Eletrônico',
-                description: 'Energia máxima para a festa',
+                name: 'Garagem & Post-Punk Brasil',
+                description: 'Guitarras reverberadas do underground nacional',
                 songs: DEFAULT_SONGS_FALLBACK.slice(8, 14)
             }
         ];
@@ -160,7 +224,7 @@
                     <div class="music-covers">
                         ${covers.map(s => `<img src="${s.cover_url}" alt="${s.title}" class="music-cover">`).join('')}
                     </div>
-                    <p class="playlist-title">${playlist.name}</p>
+                    <p class="playlist-title" style="font-size: 16px;">${playlist.name}</p>
                 `;
 
                 card.addEventListener('click', () => openPanel(playlist.id));
@@ -174,28 +238,24 @@
 
             const panel = document.getElementById('slide-panel');
             const overlay = document.querySelector('.overlay');
-            const titleEl = document.getElementById('playlist-title');
-            const descEl = document.getElementById('playlist-desc');
-            const coverGrid = document.getElementById('playlist-cover');
-            const musicList = document.getElementById('playlist-music-list');
-
-            titleEl.textContent = playlist.name;
-            descEl.textContent = playlist.description || `${playlist.songs.length} músicas na playlist`;
+            document.getElementById('playlist-title').textContent = playlist.name;
+            document.getElementById('playlist-desc').textContent = playlist.description || `${playlist.songs.length} faixas indies`;
 
             const firstFour = (playlist.songs || []).slice(0, 4);
-            coverGrid.innerHTML = firstFour.map(s => `<img src="${s.cover_url}" alt="${s.title}">`).join('');
+            document.getElementById('playlist-cover').innerHTML = firstFour.map(s => `<img src="${s.cover_url}" alt="${s.title}">`).join('');
 
+            const musicList = document.getElementById('playlist-music-list');
             musicList.innerHTML = '';
             (playlist.songs || []).forEach(song => {
                 const row = document.createElement('div');
                 row.className = 'panel-song-row';
                 row.innerHTML = `
-                    <img src="${song.cover_url}" alt="${song.title}" style="width: 55px; height: 55px; border-radius: 6px; object-fit: cover;">
+                    <img src="${song.cover_url}" alt="${song.title}" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover;">
                     <div style="flex: 1;">
-                        <div style="font-weight: bold; color: #fff;">${song.title}</div>
-                        <div style="font-size: 12px; color: #bbb;">${song.artist} • ${song.duration || '3:45'}</div>
+                        <div style="font-weight: 700; color: #fff; font-size: 14px;">${song.title}</div>
+                        <div style="font-size: 12px; color: #ffd800;">${song.artist}</div>
                     </div>
-                    <span style="color: #ffd800; font-size: 18px;">▶</span>
+                    <span style="color: #ffd800; font-size: 16px;">▶</span>
                 `;
                 row.addEventListener('click', () => {
                     window.location.href = `telademusica.html?id=${song.id}`;
@@ -212,10 +272,16 @@
             document.querySelector('.overlay').classList.remove('show');
         }
 
-        async function createNewPlaylist() {
-            const name = prompt('Digite o nome da nova Playlist:');
-            if (!name || !name.trim()) return;
-            const description = prompt('Descrição da Playlist (opcional):') || '';
+        function openNewPlaylistModal() {
+            document.getElementById('newPlaylistDialog').showModal();
+        }
+
+        document.getElementById('newPlaylistForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('plNameInput').value.trim();
+            const description = document.getElementById('plDescInput').value.trim();
+            document.getElementById('newPlaylistDialog').close();
+            e.target.reset();
 
             try {
                 const res = await fetch('/api/playlists', {
@@ -223,12 +289,13 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         userId: NectarAPI.getCurrentUserId(),
-                        name: name.trim(),
+                        name,
                         description,
-                        songIds: [1, 3, 5, 7, 9]
+                        songIds: [1, 2, 4, 5, 8]
                     })
                 });
                 if (res.ok) {
+                    showNectarToast(`🎵 Playlist "${name}" criada com sucesso!`);
                     await loadPlaylists();
                     return;
                 }
@@ -236,12 +303,13 @@
 
             loadedPlaylists.push({
                 id: Date.now(),
-                name: name.trim(),
+                name,
                 description,
                 songs: DEFAULT_SONGS_FALLBACK.slice(0, 5)
             });
             renderPlaylists();
-        }
+            showNectarToast(`🎵 Playlist "${name}" criada com sucesso!`);
+        });
 
         document.addEventListener('DOMContentLoaded', loadPlaylists);
     </script>

@@ -5,8 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/Config.css">
+    <link rel="stylesheet" href="../css/design-system.css">
     <script src="../js/script.js"></script>
     <title>Configurações - NectarNotes</title>
+    <style>
+        body {
+            background-color: #0b0d14 !important;
+        }
+        .container {
+            width: 480px;
+            background: rgba(20, 24, 41, 0.88);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 216, 0, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 216, 0, 0.18);
+            padding: 32px;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,6 +31,7 @@
             <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
             <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
             <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
+            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
                 <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
@@ -25,19 +41,19 @@
     </div>
 
     <div class="container">
-        <h2 style="margin-top: 0; color: #f0c30f;">Configurações da Conta</h2>
-        <p id="statusMsg" style="display: none; padding: 8px; border-radius: 6px; font-size: 14px;"></p>
+        <h2 style="margin-top: 0; color: #ffd800;">⚙️ Configurações da Conta</h2>
+        <p id="statusMsg" style="display: none; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600;"></p>
 
         <div class="profile-info">
-            <img id="profile-pic" src="../../pictures/icons/profile.png" alt="Foto de Perfil" style="object-fit: cover;">
-            <label for="profile-photo" class="change-photo-btn" style="text-align: center;">Trocar Foto</label>
+            <img id="profile-pic" src="../../pictures/icons/profile.png" alt="Foto de Perfil" style="object-fit: cover; border: 2px solid #ffd800;">
+            <label for="profile-photo" class="change-photo-btn" style="text-align: center; border-radius: 999px;">Trocar Avatar</label>
             <input type="file" id="profile-photo" accept="image/*" onchange="displayProfilePic(this)">
         </div>
 
         <div class="profile-info">
-            <label for="profile-name">Nome de Perfil:</label>
+            <label for="profile-name">Usuário:</label>
             <input type="text" id="profile-name" class="change-name-input" value="AbelhaRainha"
-                placeholder="Digite seu novo nome de usuário">
+                placeholder="Digite seu nome de usuário">
         </div>
 
         <div class="profile-info">
@@ -47,7 +63,7 @@
 
         <div class="profile-info">
             <label for="profile-bio">Biografia:</label>
-            <input type="text" id="profile-bio" placeholder="Coloque sua biografia aqui">
+            <input type="text" id="profile-bio" placeholder="Sua biografia na Colmeia">
         </div>
 
         <div class="profile-info">
@@ -68,10 +84,13 @@
             </select>
         </div>
 
-        <button class="save-btn" onclick="saveSettings()">Salvar Configurações</button>
-        <button class="delete-account-btn" onclick="deleteAccount()">Excluir Conta</button>
-        <div style="margin-top: 12px;">
-            <a href="../../index.html" style="color: #f0c30f; text-decoration: none; font-size: 14px;">Sair da Conta (Logout)</a>
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+            <button class="save-btn" onclick="saveSettings()" style="margin: 0; border-radius: 999px;">Salvar Alterações</button>
+            <button class="delete-account-btn" onclick="deleteAccount()" style="margin: 0; border-radius: 999px;">Excluir Conta</button>
+        </div>
+
+        <div style="margin-top: 16px;">
+            <a href="../../index.html" style="color: #ffd800; text-decoration: none; font-size: 13px; font-weight: 700;">🚪 Sair da Conta (Logout)</a>
         </div>
     </div>
 
@@ -82,6 +101,7 @@
             msg.style.display = 'block';
             msg.style.backgroundColor = isError ? '#5c1919' : '#1b4d20';
             msg.style.color = '#fff';
+            showNectarToast(text);
         }
 
         function displayProfilePic(input) {
@@ -143,12 +163,12 @@
                 if (res.ok) {
                     const { user } = await res.json();
                     NectarAPI.saveUserSession(user);
-                    showMessage('Configurações salvas no Banco de Dados com sucesso!');
+                    showMessage('✅ Configurações salvas no Banco de Dados SQLite!');
                     return;
                 }
             } catch (_) {}
 
-            showMessage('Configurações salvas localmente com sucesso!');
+            showMessage('✅ Configurações salvas com sucesso!');
         }
 
         async function deleteAccount() {
@@ -161,7 +181,6 @@
             window.location.href = '../../index.html';
         }
 
-        // Corrigido: Agora o DOMContentLoaded fica fora da função saveSettings!
         document.addEventListener('DOMContentLoaded', loadSettings);
     </script>
 </body>

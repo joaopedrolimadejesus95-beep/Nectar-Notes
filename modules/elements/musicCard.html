@@ -1,103 +1,15 @@
-<div class="CardMusic" onclick="playMusic(this, event)">
+<div class="CardMusic" data-song-id="1" onclick="playMusic(this, event)">
     <div class="CardImage">
+        <span class="card-genre-pill">Indie Pop</span>
         <img class="CapaMusica" src="../../pictures/Capas/Capa01.webp" alt="Capa da Música">
+        <div class="card-play-fab">▶</div>
     </div>
     <div class="CardContent">
-        <div class="NomeMusica"><b>Nome da Música</b></div>
-        <div class="NomeArtista">Artista</div>
-        <a class="btn-open-song" href="../../view/html/telademusica.html?id=1" title="Abrir Player Completo">▶ Ouvir na Colmeia</a>
+        <div class="NomeMusica"><b>Honeycomb Dreams</b></div>
+        <div class="NomeArtista">Luna & Os Polinizadores</div>
+        <div class="card-footer-row">
+            <span class="card-plays-count">🔥 320 plays</span>
+            <a class="btn-open-song" href="../../view/html/telademusica.html?id=1" title="Ver Perfil do Artista">Artista →</a>
+        </div>
     </div>
-    <audio class="AudioMusica">
-        <source src="../../audios/audio1.mp3" type="audio/mpeg">
-        Seu navegador não suporta o elemento de áudio.
-    </audio>
 </div>
-
-<style>
-    .CardMusic {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #1a1e30;
-        border-radius: 10px;
-        padding: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-        width: 200px;
-        min-width: 200px;
-        height: auto;
-        cursor: pointer;
-        border: 2px solid transparent;
-        box-sizing: border-box;
-    }
-
-    .CardMusic.playing {
-        border-color: #ffd800;
-        box-shadow: 0 0 15px rgba(255, 216, 0, 0.5);
-    }
-
-    .CardMusic:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .CardImage {
-        width: 170px;
-        height: 170px;
-        overflow: hidden;
-        border-radius: 10px;
-    }
-
-    .CardImage img.CapaMusica {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        object-fit: cover;
-        object-position: center;
-    }
-
-    .CardContent {
-        text-align: center;
-        margin-top: 10px;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .NomeMusica {
-        font-size: 15px;
-        font-weight: bold;
-        color: #fff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .NomeArtista {
-        font-size: 13px;
-        color: #ccc;
-        margin-bottom: 8px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .btn-open-song {
-        display: inline-block;
-        font-size: 12px;
-        color: #131722;
-        background-color: #ffd800;
-        padding: 4px 10px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.2s;
-    }
-
-    .btn-open-song:hover {
-        background-color: #ffea00;
-    }
-
-    .AudioMusica {
-        display: none;
-    }
-</style>

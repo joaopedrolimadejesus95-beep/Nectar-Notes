@@ -1,0 +1,577 @@
+/* ============================================================================
+   NectarNotes — Design System ("Honeycomb Glassmorphism & Indie Showcase")
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+:root {
+    --bg-deep: #0b0d14;
+    --bg-surface: #121624;
+    --bg-glass: rgba(22, 27, 44, 0.78);
+    --bg-glass-strong: rgba(15, 18, 30, 0.92);
+    --nectar-gold: #ffd800;
+    --nectar-amber: #ff9d00;
+    --nectar-gradient: linear-gradient(135deg, #ffd800 0%, #ff9d00 100%);
+    --nectar-glow: 0 8px 28px rgba(255, 216, 0, 0.28);
+    --border-glass: rgba(255, 216, 0, 0.16);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body) !important;
+    color: var(--text-primary);
+    padding-bottom: 96px !important; /* Espaço para o Mini-Player persistente */
+}
+
+h1, h2, h3, h4, .nomeCatalago h1 {
+    font-family: var(--font-heading) !important;
+    letter-spacing: -0.02em;
+}
+
+/* Scrollbar Moderna */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #090b10;
+}
+::-webkit-scrollbar-thumb {
+    background: #252b42;
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--nectar-gold);
+}
+
+/* ============================================================================
+   Menu Lateral Glassmorphism (Dock da Colmeia)
+   ============================================================================ */
+.menu {
+    width: 84px !important;
+    height: calc(100vh - 24px) !important;
+    top: 12px !important;
+    left: 12px !important;
+    border-radius: 22px !important;
+    background: rgba(13, 15, 25, 0.85) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border: 1px solid var(--border-glass) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55) !important;
+    padding: 16px 0 !important;
+    z-index: 1100 !important;
+}
+
+.menu ul {
+    align-items: center;
+    gap: 6px;
+}
+
+.menu ul li {
+    padding: 6px 0 !important;
+    position: relative;
+}
+
+.menu ul li a {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    position: relative;
+}
+
+.menu ul li a:hover,
+.menu ul li a.active-nav {
+    background: rgba(255, 216, 0, 0.16) !important;
+    border-color: rgba(255, 216, 0, 0.55) !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 6px 18px rgba(255, 216, 0, 0.22) !important;
+}
+
+.menu ul li a.active-nav::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    width: 4px;
+    height: 24px;
+    border-radius: 0 4px 4px 0;
+    background: var(--nectar-gradient);
+    box-shadow: 0 0 10px var(--nectar-gold);
+}
+
+.menu ul li a img {
+    height: 30px !important;
+    width: 30px !important;
+    object-fit: contain;
+}
+
+.btn-nav-indie {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: var(--nectar-gradient);
+    color: #0b0d14;
+    border: none;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--nectar-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-nav-indie:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 28px rgba(255, 216, 0, 0.45);
+}
+
+/* ============================================================================
+   Cards de Música Indie (Estilo Streaming Moderno)
+   ============================================================================ */
+.CardMusic {
+    position: relative;
+    background: var(--bg-glass) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+    width: 215px !important;
+    min-width: 215px !important;
+    height: 295px !important;
+    margin-right: 18px !important;
+    transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.CardMusic:hover {
+    transform: translateY(-6px) !important;
+    border-color: rgba(255, 216, 0, 0.45) !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 216, 0, 0.14) !important;
+}
+
+.CardMusic.playing {
+    border-color: var(--nectar-gold) !important;
+    box-shadow: 0 0 24px rgba(255, 216, 0, 0.35) !important;
+}
+
+.CardImage {
+    position: relative;
+    width: 100% !important;
+    height: 175px !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.CardImage img.CapaMusica {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.CardMusic:hover .CardImage img.CapaMusica {
+    transform: scale(1.06);
+}
+
+/* Botão Play Flutuante estilo Spotify */
+.card-play-fab {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--nectar-gradient);
+    color: #0b0d14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.CardMusic:hover .card-play-fab,
+.CardMusic.playing .card-play-fab {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-genre-pill {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(11, 13, 20, 0.82);
+    backdrop-filter: blur(6px);
+    color: var(--nectar-gold);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 216, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.CardContent {
+    text-align: left !important;
+    margin-top: 10px !important;
+    width: 100%;
+}
+
+.NomeMusica {
+    font-family: var(--font-heading);
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    margin-bottom: 3px;
+}
+
+.NomeArtista {
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+    margin-bottom: 8px !important;
+}
+
+.card-footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.card-plays-count {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.btn-open-song {
+    font-size: 11px !important;
+    color: #0b0d14 !important;
+    background: var(--nectar-gradient) !important;
+    padding: 5px 11px !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-open-song:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 216, 0, 0.35);
+}
+
+/* ============================================================================
+   Mini-Player Persistente no Rodapé
+   ============================================================================ */
+.nectar-mini-player {
+    position: fixed;
+    bottom: 12px;
+    left: 108px;
+    right: 16px;
+    height: 76px;
+    background: rgba(15, 18, 30, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    z-index: 1090;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mp-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 240px;
+    max-width: 320px;
+}
+
+.mp-cover {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 216, 0, 0.4);
+}
+
+.mp-meta {
+    overflow: hidden;
+}
+
+.mp-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mp-artist {
+    font-size: 12px;
+    color: var(--nectar-gold);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mp-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 480px;
+    gap: 6px;
+}
+
+.mp-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.mp-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.mp-btn:hover {
+    color: var(--nectar-gold);
+    transform: scale(1.1);
+}
+
+.mp-btn-play {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--nectar-gradient);
+    color: #0b0d14;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(255, 216, 0, 0.35);
+}
+
+.mp-progress-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.mp-progress-bar {
+    flex: 1;
+    accent-color: var(--nectar-gold);
+    height: 4px;
+    cursor: pointer;
+}
+
+.mp-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mp-action-pill {
+    background: rgba(255, 216, 0, 0.12);
+    color: var(--nectar-gold);
+    border: 1px solid rgba(255, 216, 0, 0.3);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.mp-action-pill:hover {
+    background: var(--nectar-gradient);
+    color: #0b0d14;
+}
+
+/* ============================================================================
+   Modal Nativo (<dialog>) — Cadastro / Divulgação de Artista Indie
+   ============================================================================ */
+dialog.nectar-modal {
+    background: #141829;
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+    border-radius: 22px;
+    padding: 28px;
+    max-width: 520px;
+    width: 92%;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+}
+
+dialog.nectar-modal::backdrop {
+    background: rgba(5, 7, 12, 0.78);
+    backdrop-filter: blur(8px);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--nectar-gold);
+    font-size: 22px;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.nectar-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.nectar-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.nectar-form-group.full {
+    grid-column: span 2;
+}
+
+.nectar-form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.nectar-form-group input,
+.nectar-form-group select,
+.nectar-form-group textarea {
+    background: #0d101d;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 13px;
+    outline: none;
+}
+
+.nectar-form-group input:focus,
+.nectar-form-group select:focus,
+.nectar-form-group textarea:focus {
+    border-color: var(--nectar-gold);
+    box-shadow: 0 0 0 3px rgba(255, 216, 0, 0.15);
+}
+
+.btn-primary-nectar {
+    background: var(--nectar-gradient);
+    color: #0b0d14;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: var(--nectar-glow);
+    transition: transform 0.2s;
+}
+
+.btn-primary-nectar:hover {
+    transform: translateY(-2px);
+}
+
+/* ============================================================================
+   Toast Notification
+   ============================================================================ */
+.nectar-toast {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    background: rgba(20, 24, 41, 0.96);
+    border: 1px solid var(--nectar-gold);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 2000;
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.nectar-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+@media (max-width: 640px) {
+    .nectar-mini-player {
+        left: 12px;
+        right: 12px;
+        bottom: 8px;
+        padding: 0 12px;
+    }
+    .mp-center {
+        display: none;
+    }
+}

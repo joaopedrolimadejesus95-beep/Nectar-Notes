@@ -1,96 +1,37 @@
-<!-- Menu Lateral NectarNotes -->
-<style>
-    .menu {
-        width: 80px;
-        height: 100vh;
-        border-radius: 6px;
-        background-color: #0d0d17;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 20px;
-    }
-
-    .menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .menu ul li {
-        padding: 10px;
-    }
-
-    .menu ul li a {
-        color: #fff;
-        text-decoration: none;
-        text-align: center;
-        border-radius: 50%;
-        background-color: #1a1e30;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .menu ul li a:hover {
-        background-color: #2a2f3d;
-        transform: scale(1.08);
-    }
-
-    .menu ul li a img {
-        height: 40px;
-        width: auto;
-    }
-
-    .menu-profile-config {
-        display: flex;
-        flex-direction: column;
-        margin-top: auto;
-        padding-bottom: 20px;
-    }
-</style>
-
+<!-- Menu Lateral NectarNotes (Glassmorphism Dock) -->
 <div class="menu">
     <ul>
         <li>
-            <a href="../../view/html/principal.html" title="Início" onclick="handleButtonClick('inicio')">
+            <a href="../../view/html/principal.html" title="Início — Vitrine Indie" onclick="handleButtonClick('inicio')">
                 <img src="../../pictures/icons/main.png" alt="Botão de Início">
             </a>
         </li>
         <li>
-            <a href="../../view/html/TelaPesquisa.html" title="Pesquisa / Party" onclick="handleButtonClick('party')">
+            <a href="../../view/html/TelaPesquisa.html" title="Explorar Cena Indie & Busca" onclick="handleButtonClick('party')">
                 <img src="../../pictures/icons/party.png" alt="Botão de Party">
             </a>
         </li>
         <li>
-            <a href="../../view/html/MusicasSalvas.html" title="Playlists Salvas" onclick="handleButtonClick('album')">
+            <a href="../../view/html/MusicasSalvas.html" title="Playlists & Minha Colmeia" onclick="handleButtonClick('album')">
                 <img src="../../pictures/icons/liked.png" alt="Botão de Album">
             </a>
         </li>
         <li>
-            <a href="../../view/html/TelaPets.html" title="Pets" onclick="handleButtonClick('pets')">
+            <a href="../../view/html/TelaPets.html" title="Mascote Pet da Colmeia" onclick="handleButtonClick('pets')">
                 <img src="../../pictures/icons/Pets.png" alt="Botão de Pets">
             </a>
         </li>
+        <li>
+            <button type="button" class="btn-nav-indie" title="Divulgar Artista / Subir Música Indie" onclick="openIndieSubmitModal()">+</button>
+        </li>
         <li class="menu-separator"></li>
         <li class="menu-profile-config" style="padding: 0;">
-            <div style="padding: 10px;">
-                <a href="../../view/html/TelaPerfil.html" title="Perfil" onclick="handleButtonClick('perfil')">
+            <div style="padding: 6px 0;">
+                <a href="../../view/html/TelaPerfil.html" title="Meu Perfil" onclick="handleButtonClick('perfil')">
                     <img src="../../pictures/icons/profile.png" alt="Botão de Perfil">
                 </a>
             </div>
-            <div style="padding: 10px;">
+            <div style="padding: 6px 0;">
                 <a href="../../view/html/TelaConfig.html" title="Configurações" onclick="handleButtonClick('configuracoes')">
                     <img src="../../pictures/icons/config.png" alt="Botão de Configurações">
                 </a>
