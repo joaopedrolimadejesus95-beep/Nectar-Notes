@@ -27,21 +27,20 @@
 <body>
     <div class="menu">
         <ul>
-            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
-            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
-            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
-            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
-            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Explorar"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Playlists"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Mascote"></a></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
-                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
-                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Configurações"></a></li>
             </div>
         </ul>
     </div>
 
     <div class="container">
-        <h2 style="margin-top: 0; color: #ffd800;">⚙️ Configurações da Conta</h2>
+        <h2 style="margin-top: 0; color: #ffd800;">Configurações da Conta</h2>
         <p id="statusMsg" style="display: none; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600;"></p>
 
         <div class="profile-info">
@@ -90,7 +89,7 @@
         </div>
 
         <div style="margin-top: 16px;">
-            <a href="../../index.html" style="color: #ffd800; text-decoration: none; font-size: 13px; font-weight: 700;">🚪 Sair da Conta (Logout)</a>
+            <a href="../../index.html" style="color: #ffd800; text-decoration: none; font-size: 13px; font-weight: 700;">Sair da Conta (Logout)</a>
         </div>
     </div>
 
@@ -134,7 +133,7 @@
 
             if (username) document.getElementById('profile-name').value = username;
             if (email) document.getElementById('profile-email').value = email;
-            if (bio) document.getElementById('profile-bio').value = bio;
+            if (bio) document.getElementById('profile-bio').value = bio.replace(/[\u{1F300}-\u{1FAFF}]/gu, '').trim();
             if (profilePic) document.getElementById('profile-pic').src = resolveAssetUrl(profilePic);
             if (country) document.getElementById('profile-country').value = country;
         }
@@ -163,12 +162,12 @@
                 if (res.ok) {
                     const { user } = await res.json();
                     NectarAPI.saveUserSession(user);
-                    showMessage('✅ Configurações salvas no Banco de Dados SQLite!');
+                    showMessage('Configurações salvas no banco de dados SQLite.');
                     return;
                 }
             } catch (_) {}
 
-            showMessage('✅ Configurações salvas com sucesso!');
+            showMessage('Configurações salvas com sucesso.');
         }
 
         async function deleteAccount() {

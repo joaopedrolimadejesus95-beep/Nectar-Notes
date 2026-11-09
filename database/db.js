@@ -95,7 +95,7 @@ function initDatabase() {
             'AbelhaRainha',
             'rainha@nectarnotes.com',
             hashPassword('123456'),
-            'Polinizando os melhores artistas indies da nossa colmeia! 🐝🍯',
+            'Polinizando os melhores artistas indies da nossa colmeia.',
             'brasil',
             '/pictures/icons/profile.png'
         );
@@ -103,6 +103,7 @@ function initDatabase() {
     } else {
         const firstUser = db.prepare('SELECT id FROM users ORDER BY id ASC LIMIT 1').get();
         if (firstUser) defaultUserId = firstUser.id;
+        db.prepare("UPDATE users SET bio = 'Polinizando os melhores artistas indies da nossa colmeia.' WHERE bio LIKE '%🐝%'").run();
     }
 
     // 2. Atualizar ou inserir catálogo de artistas indies

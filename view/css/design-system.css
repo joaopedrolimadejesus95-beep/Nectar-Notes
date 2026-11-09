@@ -1,48 +1,66 @@
 /* ============================================================================
-   NectarNotes — Design System ("Honeycomb Glassmorphism & Indie Showcase")
+   NectarNotes — Refined Design System (Zero Emojis, Clean SVG & Glass UI)
    ============================================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
 :root {
-    --bg-deep: #0b0d14;
-    --bg-surface: #121624;
-    --bg-glass: rgba(22, 27, 44, 0.78);
-    --bg-glass-strong: rgba(15, 18, 30, 0.92);
-    --nectar-gold: #ffd800;
-    --nectar-amber: #ff9d00;
-    --nectar-gradient: linear-gradient(135deg, #ffd800 0%, #ff9d00 100%);
-    --nectar-glow: 0 8px 28px rgba(255, 216, 0, 0.28);
-    --border-glass: rgba(255, 216, 0, 0.16);
-    --border-subtle: rgba(255, 255, 255, 0.08);
+    --bg-deep: #090b10;
+    --bg-surface: #111520;
+    --bg-elevated: #171c2b;
+    --bg-glass: rgba(19, 23, 36, 0.82);
+    --bg-glass-strong: rgba(12, 15, 24, 0.94);
+    --nectar-gold: #f5c518;
+    --nectar-amber: #f59e0b;
+    --nectar-gradient: linear-gradient(135deg, #ffd800 0%, #f59e0b 100%);
+    --nectar-glow: 0 8px 24px rgba(245, 197, 24, 0.22);
+    --border-glass: rgba(255, 216, 0, 0.14);
+    --border-subtle: rgba(255, 255, 255, 0.07);
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
+    --text-muted: #8b98a9;
     --danger: #ef4444;
-    --success: #22c55e;
-    --radius-sm: 10px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
+    --success: #10b981;
     --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --sidebar-width: 76px;
 }
 
-* {
+*, *::before, *::after {
     box-sizing: border-box;
 }
 
-body {
+html, body {
+    margin: 0;
+    padding: 0;
     font-family: var(--font-body) !important;
+    background-color: var(--bg-deep);
     color: var(--text-primary);
-    padding-bottom: 96px !important; /* Espaço para o Mini-Player persistente */
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+body.has-active-player {
+    padding-bottom: 92px !important;
 }
 
 h1, h2, h3, h4, .nomeCatalago h1 {
     font-family: var(--font-heading) !important;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
 }
 
-/* Scrollbar Moderna */
+svg.ui-icon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    flex-shrink: 0;
+}
+
+/* Scrollbar Discreta */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -51,7 +69,7 @@ h1, h2, h3, h4, .nomeCatalago h1 {
     background: #090b10;
 }
 ::-webkit-scrollbar-thumb {
-    background: #252b42;
+    background: #23293e;
     border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -59,160 +77,175 @@ h1, h2, h3, h4, .nomeCatalago h1 {
 }
 
 /* ============================================================================
-   Menu Lateral Glassmorphism (Dock da Colmeia)
+   Sidebar Lateral Fixa (Sem cortar ícones em telas menores)
    ============================================================================ */
 .menu {
-    width: 84px !important;
-    height: calc(100vh - 24px) !important;
-    top: 12px !important;
-    left: 12px !important;
-    border-radius: 22px !important;
-    background: rgba(13, 15, 25, 0.85) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
-    border: 1px solid var(--border-glass) !important;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55) !important;
+    width: var(--sidebar-width) !important;
+    height: 100vh !important;
+    top: 0 !important;
+    left: 0 !important;
+    border-radius: 0 !important;
+    background: rgba(10, 12, 20, 0.94) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45) !important;
     padding: 16px 0 !important;
-    z-index: 1100 !important;
+    z-index: 1200 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
 }
 
 .menu ul {
-    align-items: center;
-    gap: 6px;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
 }
 
 .menu ul li {
-    padding: 6px 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex;
+    justify-content: center;
+    width: 100%;
     position: relative;
 }
 
+.menu ul li.menu-separator {
+    flex: 1 1 auto;
+    min-height: 8px;
+    border: none !important;
+}
+
+.menu-profile-config {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-top: auto !important;
+    padding-bottom: 6px !important;
+    width: 100%;
+}
+
 .menu ul li a {
-    width: 54px !important;
-    height: 54px !important;
-    border-radius: 16px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    width: 46px !important;
+    height: 46px !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
     position: relative;
 }
 
 .menu ul li a:hover,
 .menu ul li a.active-nav {
-    background: rgba(255, 216, 0, 0.16) !important;
-    border-color: rgba(255, 216, 0, 0.55) !important;
-    transform: translateY(-2px) scale(1.05) !important;
-    box-shadow: 0 6px 18px rgba(255, 216, 0, 0.22) !important;
+    background: rgba(245, 197, 24, 0.14) !important;
+    border-color: rgba(245, 197, 24, 0.5) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 14px rgba(245, 197, 24, 0.18) !important;
 }
 
 .menu ul li a.active-nav::before {
     content: '';
     position: absolute;
-    left: -14px;
-    width: 4px;
-    height: 24px;
+    left: -15px;
+    width: 3px;
+    height: 22px;
     border-radius: 0 4px 4px 0;
     background: var(--nectar-gradient);
-    box-shadow: 0 0 10px var(--nectar-gold);
 }
 
 .menu ul li a img {
-    height: 30px !important;
-    width: 30px !important;
+    height: 24px !important;
+    width: 24px !important;
     object-fit: contain;
-}
-
-.btn-nav-indie {
-    width: 54px;
-    height: 54px;
-    border-radius: 16px;
-    background: var(--nectar-gradient);
-    color: #0b0d14;
-    border: none;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--nectar-glow);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-nav-indie:hover {
-    transform: scale(1.08);
-    box-shadow: 0 10px 28px rgba(255, 216, 0, 0.45);
+    border-radius: 0 !important;
 }
 
 /* ============================================================================
-   Cards de Música Indie (Estilo Streaming Moderno)
+   Cards de Música Indie
    ============================================================================ */
 .CardMusic {
     position: relative;
-    background: var(--bg-glass) !important;
-    backdrop-filter: blur(12px);
+    background: var(--bg-surface) !important;
     border: 1px solid var(--border-subtle) !important;
-    border-radius: 16px !important;
-    padding: 14px !important;
-    width: 215px !important;
-    min-width: 215px !important;
-    height: 295px !important;
-    margin-right: 18px !important;
-    transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32) !important;
+    border-radius: 14px !important;
+    padding: 12px !important;
+    width: 204px !important;
+    min-width: 204px !important;
+    height: 278px !important;
+    margin-right: 16px !important;
+    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28) !important;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .CardMusic:hover {
-    transform: translateY(-6px) !important;
-    border-color: rgba(255, 216, 0, 0.45) !important;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 216, 0, 0.14) !important;
+    transform: translateY(-4px) !important;
+    border-color: rgba(245, 197, 24, 0.4) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+    background: var(--bg-elevated) !important;
 }
 
 .CardMusic.playing {
     border-color: var(--nectar-gold) !important;
-    box-shadow: 0 0 24px rgba(255, 216, 0, 0.35) !important;
+    box-shadow: 0 0 0 1px var(--nectar-gold), 0 10px 24px rgba(245, 197, 24, 0.2) !important;
 }
 
 .CardImage {
     position: relative;
     width: 100% !important;
-    height: 175px !important;
-    border-radius: 12px !important;
+    height: 168px !important;
+    border-radius: 10px !important;
     overflow: hidden;
+    background: #0d1018;
 }
 
 .CardImage img.CapaMusica {
     width: 100% !important;
     height: 100% !important;
+    margin: 0 !important;
+    border-radius: 10px !important;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.35s ease;
 }
 
 .CardMusic:hover .CardImage img.CapaMusica {
-    transform: scale(1.06);
+    transform: scale(1.04);
 }
 
-/* Botão Play Flutuante estilo Spotify */
 .card-play-fab {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: var(--nectar-gradient);
-    color: #0b0d14;
+    color: #090b10;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
     opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.25s ease;
+    transform: translateY(6px);
+    transition: all 0.22s ease;
     pointer-events: none;
 }
 
@@ -226,16 +259,16 @@ h1, h2, h3, h4, .nomeCatalago h1 {
     position: absolute;
     top: 8px;
     left: 8px;
-    background: rgba(11, 13, 20, 0.82);
+    background: rgba(9, 11, 16, 0.84);
     backdrop-filter: blur(6px);
     color: var(--nectar-gold);
     font-size: 10px;
     font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 216, 0, 0.3);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 216, 0, 0.25);
+    letter-spacing: 0.03em;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
 }
 
 .CardContent {
@@ -246,16 +279,22 @@ h1, h2, h3, h4, .nomeCatalago h1 {
 
 .NomeMusica {
     font-family: var(--font-heading);
-    font-size: 15px !important;
+    font-size: 14px !important;
     font-weight: 700 !important;
-    color: #fff !important;
-    margin-bottom: 3px;
+    color: var(--text-primary) !important;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .NomeArtista {
-    font-size: 13px !important;
+    font-size: 12.5px !important;
     color: var(--text-muted) !important;
     margin-bottom: 8px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-footer-row {
@@ -263,67 +302,79 @@ h1, h2, h3, h4, .nomeCatalago h1 {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .card-plays-count {
     font-size: 11px;
     color: var(--text-muted);
+    font-weight: 500;
 }
 
 .btn-open-song {
     font-size: 11px !important;
-    color: #0b0d14 !important;
-    background: var(--nectar-gradient) !important;
-    padding: 5px 11px !important;
-    border-radius: 999px !important;
-    font-weight: 700 !important;
+    color: var(--nectar-gold) !important;
+    background: rgba(245, 197, 24, 0.1) !important;
+    border: 1px solid rgba(245, 197, 24, 0.28);
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
     text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.2s;
 }
 
 .btn-open-song:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 216, 0, 0.35);
+    background: var(--nectar-gradient) !important;
+    color: #090b10 !important;
+    border-color: transparent;
 }
 
 /* ============================================================================
-   Mini-Player Persistente no Rodapé
+   Mini-Player Persistente no Rodapé (Oculto até tocar uma faixa)
    ============================================================================ */
 .nectar-mini-player {
     position: fixed;
-    bottom: 12px;
-    left: 108px;
-    right: 16px;
+    bottom: 0;
+    left: var(--sidebar-width);
+    right: 0;
     height: 76px;
-    background: rgba(15, 18, 30, 0.92);
+    background: rgba(12, 15, 24, 0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-glass);
-    border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 22px;
-    z-index: 1090;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    padding: 0 28px;
+    z-index: 1150;
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.28s ease;
+}
+
+.nectar-mini-player.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .mp-left {
     display: flex;
     align-items: center;
     gap: 14px;
-    min-width: 240px;
-    max-width: 320px;
+    min-width: 220px;
+    max-width: 300px;
 }
 
 .mp-cover {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
     object-fit: cover;
-    border: 2px solid rgba(255, 216, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .mp-meta {
@@ -332,7 +383,7 @@ h1, h2, h3, h4, .nomeCatalago h1 {
 
 .mp-title {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13.5px;
     color: #fff;
     white-space: nowrap;
     overflow: hidden;
@@ -341,10 +392,11 @@ h1, h2, h3, h4, .nomeCatalago h1 {
 
 .mp-artist {
     font-size: 12px;
-    color: var(--nectar-gold);
+    color: var(--text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: 2px;
 }
 
 .mp-center {
@@ -352,14 +404,14 @@ h1, h2, h3, h4, .nomeCatalago h1 {
     flex-direction: column;
     align-items: center;
     flex: 1;
-    max-width: 480px;
+    max-width: 460px;
     gap: 6px;
 }
 
 .mp-controls {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
 }
 
 .mp-btn {
@@ -367,29 +419,29 @@ h1, h2, h3, h4, .nomeCatalago h1 {
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: 16px;
-    transition: color 0.2s, transform 0.2s;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
 }
 
 .mp-btn:hover {
     color: var(--nectar-gold);
-    transform: scale(1.1);
 }
 
 .mp-btn-play {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: var(--nectar-gradient);
-    color: #0b0d14;
+    color: #090b10;
     border: none;
-    font-size: 15px;
-    font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 14px rgba(255, 216, 0, 0.35);
+    box-shadow: 0 4px 12px rgba(245, 197, 24, 0.28);
 }
 
 .mp-progress-wrap {
@@ -399,6 +451,7 @@ h1, h2, h3, h4, .nomeCatalago h1 {
     gap: 10px;
     font-size: 11px;
     color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
 }
 
 .mp-progress-bar {
@@ -415,64 +468,74 @@ h1, h2, h3, h4, .nomeCatalago h1 {
 }
 
 .mp-action-pill {
-    background: rgba(255, 216, 0, 0.12);
-    color: var(--nectar-gold);
-    border: 1px solid rgba(255, 216, 0, 0.3);
-    padding: 7px 14px;
-    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 7px 13px;
+    border-radius: 8px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     transition: all 0.2s;
 }
 
 .mp-action-pill:hover {
+    border-color: var(--nectar-gold);
+    color: var(--nectar-gold);
+}
+
+.mp-action-pill.primary {
     background: var(--nectar-gradient);
-    color: #0b0d14;
+    color: #090b10;
+    border-color: transparent;
+    font-weight: 700;
 }
 
 /* ============================================================================
-   Modal Nativo (<dialog>) — Cadastro / Divulgação de Artista Indie
+   Modal Nativo (<dialog>)
    ============================================================================ */
 dialog.nectar-modal {
-    background: #141829;
+    background: #131724;
     color: var(--text-primary);
-    border: 1px solid var(--border-glass);
-    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
     padding: 28px;
     max-width: 520px;
     width: 92%;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
 }
 
 dialog.nectar-modal::backdrop {
     background: rgba(5, 7, 12, 0.78);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .modal-header h2 {
     margin: 0;
-    color: var(--nectar-gold);
-    font-size: 22px;
+    color: var(--text-primary);
+    font-size: 20px;
 }
 
 .modal-close {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-secondary);
     border: none;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .nectar-form-grid {
@@ -485,7 +548,7 @@ dialog.nectar-modal::backdrop {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     text-align: left;
 }
 
@@ -502,9 +565,9 @@ dialog.nectar-modal::backdrop {
 .nectar-form-group input,
 .nectar-form-group select,
 .nectar-form-group textarea {
-    background: #0d101d;
+    background: #0b0e17;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 10px 12px;
     color: #fff;
     font-family: var(--font-body);
@@ -516,25 +579,23 @@ dialog.nectar-modal::backdrop {
 .nectar-form-group select:focus,
 .nectar-form-group textarea:focus {
     border-color: var(--nectar-gold);
-    box-shadow: 0 0 0 3px rgba(255, 216, 0, 0.15);
 }
 
 .btn-primary-nectar {
     background: var(--nectar-gradient);
-    color: #0b0d14;
+    color: #090b10;
     border: none;
-    padding: 12px 22px;
-    border-radius: 12px;
-    font-weight: 800;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 700;
     font-size: 14px;
     cursor: pointer;
     width: 100%;
-    box-shadow: var(--nectar-glow);
-    transition: transform 0.2s;
+    transition: opacity 0.2s;
 }
 
 .btn-primary-nectar:hover {
-    transform: translateY(-2px);
+    opacity: 0.92;
 }
 
 /* ============================================================================
@@ -542,21 +603,21 @@ dialog.nectar-modal::backdrop {
    ============================================================================ */
 .nectar-toast {
     position: fixed;
-    top: 22px;
-    right: 22px;
-    background: rgba(20, 24, 41, 0.96);
+    top: 20px;
+    right: 24px;
+    background: #161b2b;
     border: 1px solid var(--nectar-gold);
     color: #fff;
-    padding: 12px 20px;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
     font-size: 13px;
     font-weight: 600;
     z-index: 2000;
-    transform: translateY(-20px);
+    transform: translateY(-16px);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.25s ease;
+    transition: all 0.22s ease;
 }
 
 .nectar-toast.show {
@@ -565,11 +626,8 @@ dialog.nectar-modal::backdrop {
 }
 
 @media (max-width: 640px) {
-    .nectar-mini-player {
-        left: 12px;
-        right: 12px;
-        bottom: 8px;
-        padding: 0 12px;
+    :root {
+        --sidebar-width: 64px;
     }
     .mp-center {
         display: none;

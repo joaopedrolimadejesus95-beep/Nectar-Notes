@@ -14,17 +14,17 @@
             display: block !important;
         }
         .explore-wrapper {
-            margin-left: 116px;
+            margin-left: 104px;
             margin-right: 32px;
             padding-top: 28px;
         }
         .explore-hero {
-            background: linear-gradient(135deg, rgba(255, 216, 0, 0.16) 0%, rgba(20, 24, 41, 0.92) 70%);
-            border: 1px solid rgba(255, 216, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 216, 0, 0.14) 0%, rgba(20, 24, 41, 0.94) 70%);
+            border: 1px solid rgba(255, 216, 0, 0.28);
             border-radius: 24px;
-            padding: 36px;
+            padding: 34px;
             text-align: left;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
             margin-bottom: 32px;
             display: flex;
             align-items: center;
@@ -34,14 +34,15 @@
         }
         .explore-hero h1 {
             text-align: left;
-            font-size: 32px;
+            font-size: 30px;
             margin: 0 0 8px 0;
             color: #fff;
+            letter-spacing: -0.02em;
         }
         .explore-hero p {
             margin: 0 0 20px 0;
-            color: #cbd5e1;
-            font-size: 15px;
+            color: #94a3b8;
+            font-size: 14px;
         }
         .explore-search-bar {
             display: flex;
@@ -52,11 +53,11 @@
         .explore-search-bar input {
             flex: 1;
             background: #0b0d14;
-            border: 1px solid rgba(255, 216, 0, 0.45);
+            border: 1px solid rgba(255, 216, 0, 0.35);
             color: #fff;
-            padding: 14px 20px;
+            padding: 13px 20px;
             border-radius: 999px;
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
         }
         .explore-search-bar button {
@@ -66,7 +67,7 @@
             border-radius: 999px;
             padding: 0 26px;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             margin: 0;
         }
@@ -77,31 +78,32 @@
             margin-bottom: 36px;
         }
         .genre-card {
-            border-radius: 20px;
-            padding: 24px 20px;
+            border-radius: 18px;
+            padding: 22px 20px;
             cursor: pointer;
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            min-height: 120px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            min-height: 112px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         .genre-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
             border-color: #ffd800;
         }
         .genre-card h3 {
             margin: 0;
-            font-size: 19px;
+            font-size: 18px;
             color: #fff;
+            font-weight: 800;
         }
         .genre-card span {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.82);
             font-weight: 600;
         }
     </style>
@@ -109,15 +111,14 @@
 <body>
     <div class="menu">
         <ul>
-            <li><a href="principal.html" title="Início" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
-            <li><a href="TelaPesquisa.html" title="Explorar Cena Indie" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
-            <li><a href="MusicasSalvas.html" title="Playlists Salvas" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
-            <li><a href="TelaPets.html" title="Pets" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
-            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
+            <li><a href="principal.html" title="Início" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Início"></a></li>
+            <li><a href="TelaPesquisa.html" title="Explorar Cena Indie" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Explorar"></a></li>
+            <li><a href="MusicasSalvas.html" title="Playlists Salvas" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Playlists"></a></li>
+            <li><a href="TelaPets.html" title="Mascote" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Mascote"></a></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
-                <li><a href="TelaPerfil.html" title="Perfil" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
-                <li><a href="TelaConfig.html" title="Configurações" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+                <li><a href="TelaPerfil.html" title="Perfil" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Perfil"></a></li>
+                <li><a href="TelaConfig.html" title="Configurações" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Configurações"></a></li>
             </div>
         </ul>
     </div>
@@ -125,49 +126,49 @@
     <div class="explore-wrapper">
         <div class="explore-hero">
             <div style="flex: 1; min-width: 280px;">
-                <h1>🐝 Radar de Artistas Indies</h1>
-                <p>Descubra bandas independentes, produtores de quarto e novos talentos da cena autoral brasileira.</p>
+                <h1>Radar de Artistas Independentes</h1>
+                <p>Descubra bandas independentes, produtores de home studio e novos talentos da cena autoral brasileira.</p>
                 <div class="explore-search-bar">
                     <input type="text" id="pageSearchInput" placeholder="Busque por banda, música, estilo ou cidade (ex: Curitiba, Indie Rock, Lo-Fi)..." />
                     <button type="button" onclick="executarBusca()">Explorar</button>
                 </div>
             </div>
             <div>
-                <button type="button" onclick="openIndieSubmitModal()" style="background: rgba(255, 216, 0, 0.14); color: #ffd800; border: 2px solid #ffd800; padding: 16px 24px; border-radius: 18px; font-weight: 800; font-size: 14px; cursor: pointer;">
-                    🎸 Tem uma banda ou projeto indie?<br><span style="font-size: 12px; font-weight: 500; color: #fff;">Clique aqui para divulgar de graça na Colmeia</span>
+                <button type="button" onclick="openIndieSubmitModal()" style="background: rgba(255, 216, 0, 0.12); color: #ffd800; border: 1px solid rgba(255, 216, 0, 0.5); padding: 16px 24px; border-radius: 16px; font-weight: 800; font-size: 13px; cursor: pointer; text-align: left;">
+                    Tem uma banda ou projeto indie?<br><span style="font-size: 12px; font-weight: 500; color: #cbd5e1;">Clique para divulgar gratuitamente na Colmeia</span>
                 </button>
             </div>
         </div>
 
-        <h2 style="color: #ffd800; margin-bottom: 16px;">Explorar por Cena & Estilo Musical</h2>
+        <h2 style="color: #f8fafc; font-size: 20px; margin-bottom: 16px;">Explorar por Cena e Estilo Musical</h2>
         <div class="genre-grid">
-            <div class="genre-card" style="background: linear-gradient(135deg, #6366f1, #312e81);" onclick="buscarPorTermo('Indie')">
-                <h3>🎸 Indie Rock & Pop</h3>
-                <span>Guitarras reverberadas & Dream Pop →</span>
+            <div class="genre-card" style="background: linear-gradient(135deg, #4f46e5, #1e1b4b);" onclick="buscarPorTermo('Indie')">
+                <h3>Indie Rock & Pop</h3>
+                <span>Guitarras reverberadas e Dream Pop</span>
             </div>
-            <div class="genre-card" style="background: linear-gradient(135deg, #f59e0b, #78350f);" onclick="buscarPorTermo('Bedroom')">
-                <h3>🛏️ Bedroom Pop</h3>
-                <span>Produções caseiras & intimistas →</span>
+            <div class="genre-card" style="background: linear-gradient(135deg, #d97706, #451a03);" onclick="buscarPorTermo('Bedroom')">
+                <h3>Bedroom Pop</h3>
+                <span>Produções caseiras e intimistas</span>
             </div>
-            <div class="genre-card" style="background: linear-gradient(135deg, #10b981, #064e3b);" onclick="buscarPorTermo('MPB')">
-                <h3>🌿 Nova MPB & Folk</h3>
-                <span>Voz, violão e brasilidades →</span>
+            <div class="genre-card" style="background: linear-gradient(135deg, #059669, #022c22);" onclick="buscarPorTermo('MPB')">
+                <h3>Nova MPB & Folk</h3>
+                <span>Voz, violão e brasilidades</span>
             </div>
-            <div class="genre-card" style="background: linear-gradient(135deg, #ec4899, #831843);" onclick="buscarPorTermo('Lo-Fi')">
-                <h3>☕ Lo-Fi & Chillhop</h3>
-                <span>Beats para estudar e relaxar →</span>
+            <div class="genre-card" style="background: linear-gradient(135deg, #db2777, #500724);" onclick="buscarPorTermo('Lo-Fi')">
+                <h3>Lo-Fi & Chillhop</h3>
+                <span>Beats instrumentais e relaxantes</span>
             </div>
-            <div class="genre-card" style="background: linear-gradient(135deg, #8b5cf6, #4c1d95);" onclick="buscarPorTermo('Synth')">
-                <h3>🎹 Synthwave & Eletrônica</h3>
-                <span>Sintetizadores analógicos →</span>
+            <div class="genre-card" style="background: linear-gradient(135deg, #7c3aed, #2e1065);" onclick="buscarPorTermo('Synth')">
+                <h3>Synthwave & Eletrônica</h3>
+                <span>Sintetizadores analógicos</span>
             </div>
-            <div class="genre-card" style="background: linear-gradient(135deg, #ef4444, #7f1d1d);" onclick="buscarPorTermo('Rap')">
-                <h3>🎤 Rap & Trap Underground</h3>
-                <span>Rimas autorais da cena local →</span>
+            <div class="genre-card" style="background: linear-gradient(135deg, #dc2626, #450a0a);" onclick="buscarPorTermo('Rap')">
+                <h3>Rap & Trap Underground</h3>
+                <span>Rimas autorais da cena local</span>
             </div>
         </div>
 
-        <h2 style="color: #fff; margin-bottom: 16px;">🔥 Destaques da Comunidade Agora</h2>
+        <h2 style="color: #f8fafc; font-size: 20px; margin-bottom: 16px;">Destaques da Comunidade</h2>
         <div id="communityGrid" style="display: flex; flex-wrap: wrap; gap: 18px;"></div>
     </div>
 
@@ -198,14 +199,16 @@
                     <div class="CardImage">
                         <span class="card-genre-pill">${song.genre || 'Indie'}</span>
                         <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}">
-                        <div class="card-play-fab">▶</div>
+                        <div class="card-play-fab">
+                            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
                     </div>
                     <div class="CardContent">
                         <div class="NomeMusica"><b>${song.title}</b></div>
                         <div class="NomeArtista">${song.artist}</div>
                         <div class="card-footer-row">
-                            <span class="card-plays-count">📍 ${song.artist_city || 'Brasil'}</span>
-                            <a class="btn-open-song" href="telademusica.html?id=${song.id}">Artista →</a>
+                            <span class="card-plays-count">${song.artist_city || 'Brasil'}</span>
+                            <a class="btn-open-song" href="telademusica.html?id=${song.id}">Ver artista</a>
                         </div>
                     </div>
                 `;

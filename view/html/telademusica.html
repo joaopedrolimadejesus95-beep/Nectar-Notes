@@ -14,8 +14,8 @@
             padding-bottom: 20px !important;
         }
         .container {
-            margin-left: 108px;
-            width: calc(100% - 124px);
+            margin-left: 96px;
+            width: calc(100% - 116px);
             min-height: 94vh;
             height: auto;
             gap: 20px;
@@ -58,11 +58,22 @@
             box-shadow: 0 0 18px rgba(255, 216, 0, 0.2);
         }
         .album-art {
-            width: 68px;
-            height: 68px;
+            width: 64px;
+            height: 64px;
             border-radius: 10px;
             object-fit: cover;
             margin-right: 16px;
+        }
+        .play-badge-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 216, 0, 0.14);
+            color: #ffd800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
         @media (max-width: 960px) {
             .container {
@@ -77,15 +88,14 @@
 <body>
     <div class="menu">
         <ul>
-            <li><a href="principal.html" title="Início" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
-            <li><a href="TelaPesquisa.html" title="Explorar Cena Indie" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
-            <li><a href="MusicasSalvas.html" title="Playlists Salvas" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
-            <li><a href="TelaPets.html" title="Pets" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
-            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
+            <li><a href="principal.html" title="Início" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Início"></a></li>
+            <li><a href="TelaPesquisa.html" title="Explorar Cena Indie" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Explorar"></a></li>
+            <li><a href="MusicasSalvas.html" title="Playlists Salvas" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Playlists"></a></li>
+            <li><a href="TelaPets.html" title="Mascote" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Mascote"></a></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
-                <li><a href="TelaPerfil.html" title="Perfil" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
-                <li><a href="TelaConfig.html" title="Configurações" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+                <li><a href="TelaPerfil.html" title="Perfil" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Perfil"></a></li>
+                <li><a href="TelaConfig.html" title="Configurações" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Configurações"></a></li>
             </div>
         </ul>
     </div>
@@ -95,8 +105,8 @@
             <iframe id="playerIframe" src="iframedatelademusica.html?id=1" style="width: 100%; height: 760px; border: none;"></iframe>
         </div>
         <div class="right-side">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h1 style="color: #ffd800; margin: 0; font-size: 24px;">🐝 Fila da Cena Indie</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h1 style="color: #f8fafc; margin: 0; font-size: 21px; font-weight: 800;">Fila da Cena Indie</h1>
                 <button type="button" onclick="openIndieSubmitModal()" style="background: linear-gradient(135deg, #ffd800, #ff9d00); color: #0b0d14; border: none; padding: 8px 16px; border-radius: 999px; font-weight: 800; font-size: 12px; cursor: pointer;">
                     + Divulgar Minha Banda
                 </button>
@@ -122,11 +132,13 @@
                 item.innerHTML = `
                     <img src="${song.cover_url}" alt="${song.title}" class="album-art">
                     <div style="flex: 1;">
-                        <h2 style="font-size: 16px; margin: 0 0 4px 0; color: #fff;">${song.title}</h2>
+                        <h2 style="font-size: 15px; margin: 0 0 4px 0; color: #fff;">${song.title}</h2>
                         <p style="color: #ffd800; font-size: 13px; margin: 0 0 3px 0; font-weight: 600;">${song.artist}</p>
-                        <span style="color: #94a3b8; font-size: 12px;">📍 ${song.artist_city || 'Brasil'} • ${song.genre} • 🐝 ${song.plays || 100} plays</span>
+                        <span style="color: #94a3b8; font-size: 12px;">${song.artist_city || 'Brasil'} • ${song.genre} • ${song.plays || 100} plays</span>
                     </div>
-                    <span style="color: #ffd800; font-weight: 800; font-size: 18px;">▶</span>
+                    <span class="play-badge-circle">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
                 `;
                 item.addEventListener('click', () => {
                     iframe.src = `iframedatelademusica.html?id=${song.id}`;

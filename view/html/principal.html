@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NectarNotes — O Streaming dos Artistas Indies</title>
+    <title>NectarNotes — Plataforma de Artistas Independentes</title>
     <link rel="stylesheet" href="../../view/css/telaPrincipal.css">
     <link rel="stylesheet" href="../../view/css/design-system.css">
     <script src="../../view/js/script.js" defer></script>
@@ -12,34 +12,209 @@
     <style>
         body {
             background-color: #0b0d14;
+            display: block;
+            overflow-x: hidden;
         }
+
+        /* Hero Parallax das Abelhas — sem cortes nas colinas/girassóis e sem cobrir o logo */
+        .header {
+            padding: 0 !important;
+            margin-left: 76px;
+            width: calc(100% - 76px);
+            height: 60vh;
+            min-height: 410px;
+            max-height: 560px;
+            position: relative;
+            overflow: hidden;
+            background: #23698e;
+            border-bottom: 1px solid rgba(255, 216, 0, 0.18);
+        }
+
+        #parallax-container,
+        .parallax {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100% !important;
+        }
+
+        .parallax img.parallax-layer {
+            position: absolute;
+            inset: 0;
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            pointer-events: none;
+            will-change: transform;
+            transition: transform 0.15s ease-out;
+        }
+
+        .parallax img.layer-sky {
+            z-index: 1;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .parallax img.layer-hills {
+            z-index: 2;
+            object-fit: cover;
+            object-position: center bottom;
+        }
+
+        .parallax img.layer-flowers {
+            z-index: 3;
+            object-fit: cover;
+            object-position: center bottom;
+        }
+
+        .parallax img.layer-bees {
+            z-index: 4;
+            object-fit: contain;
+            object-position: center 58%;
+        }
+
         .header::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 150px;
-            background: linear-gradient(to bottom, transparent, #0b0d14);
-            z-index: 6;
+            height: 54px;
+            background: linear-gradient(to bottom, rgba(11, 13, 20, 0), #0b0d14);
+            z-index: 5;
             pointer-events: none;
         }
-        .indie-spotlight-banner {
-            margin: -30px 32px 36px 116px;
-            padding: 28px 32px;
-            border-radius: 24px;
-            background: linear-gradient(125deg, rgba(28, 33, 54, 0.92) 0%, rgba(16, 19, 32, 0.95) 65%, rgba(255, 216, 0, 0.14) 100%);
-            border: 1px solid rgba(255, 216, 0, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(18px);
+
+        /* Barra Superior de Pesquisa e Ação (abaixo do banner, sem tampar a arte) */
+        .top-action-bar {
+            margin: 18px 32px 22px 104px;
+            padding: 14px 22px;
+            background: rgba(18, 22, 36, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .brand-pill-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ffd800;
+            box-shadow: 0 0 12px #ffd800;
+        }
+
+        .brand-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            letter-spacing: 0.01em;
+        }
+
+        .brand-subtitle strong {
+            color: #ffd800;
+            font-weight: 700;
+        }
+
+        .top-controls-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 280px;
+        }
+
+        .search-box-modern {
             position: relative;
-            z-index: 10;
+            flex: 1;
+            max-width: 420px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box-modern svg {
+            position: absolute;
+            left: 15px;
+            width: 17px;
+            height: 17px;
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .search-box-modern input {
+            width: 100%;
+            height: 42px;
+            padding: 0 16px 0 42px;
+            background: rgba(11, 13, 20, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            color: #f8fafc;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-box-modern input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-box-modern input:focus {
+            border-color: rgba(255, 216, 0, 0.55);
+            box-shadow: 0 0 0 3px rgba(255, 216, 0, 0.12);
+        }
+
+        .btn-submit-artist {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ffd800 0%, #ff9d00 100%);
+            color: #0b0d14;
+            border: none;
+            border-radius: 999px;
+            height: 42px;
+            padding: 0 20px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 216, 0, 0.25);
+            white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-submit-artist:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(255, 216, 0, 0.38);
+        }
+
+        /* Card de Artista Indie em Destaque */
+        .indie-spotlight-banner {
+            margin: 0 32px 34px 104px;
+            padding: 26px 30px;
+            border-radius: 22px;
+            background: linear-gradient(125deg, rgba(24, 29, 48, 0.92) 0%, rgba(15, 18, 30, 0.96) 65%, rgba(255, 216, 0, 0.1) 100%);
+            border: 1px solid rgba(255, 216, 0, 0.22);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 28px;
             flex-wrap: wrap;
         }
+
         .spotlight-left {
             display: flex;
             align-items: center;
@@ -47,123 +222,186 @@
             flex: 1;
             min-width: 280px;
         }
+
         .spotlight-cover {
-            width: 135px;
-            height: 135px;
-            border-radius: 18px;
+            width: 124px;
+            height: 124px;
+            border-radius: 16px;
             object-fit: cover;
-            border: 2px solid #ffd800;
-            box-shadow: 0 10px 28px rgba(255, 216, 0, 0.25);
+            border: 2px solid rgba(255, 216, 0, 0.65);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
         }
+
         .spotlight-badge {
-            display: inline-block;
-            background: rgba(255, 216, 0, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 216, 0, 0.12);
             color: #ffd800;
-            border: 1px solid rgba(255, 216, 0, 0.4);
+            border: 1px solid rgba(255, 216, 0, 0.32);
             padding: 4px 12px;
             border-radius: 999px;
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: 0.05em;
             text-transform: uppercase;
             margin-bottom: 8px;
         }
+
         .spotlight-title {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             margin: 0 0 6px 0;
             color: #fff;
+            letter-spacing: -0.02em;
         }
+
         .spotlight-artist {
-            font-size: 15px;
+            font-size: 14px;
             color: #ffd800;
             font-weight: 600;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
         .spotlight-bio {
             font-size: 13px;
-            color: #cbd5e1;
+            color: #94a3b8;
             max-width: 620px;
-            line-height: 1.5;
+            line-height: 1.55;
             margin: 0;
         }
+
         .spotlight-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
+
         .btn-spotlight-play {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: linear-gradient(135deg, #ffd800 0%, #ff9d00 100%);
             color: #0b0d14;
             border: none;
-            padding: 12px 24px;
+            padding: 11px 22px;
             border-radius: 999px;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(255, 216, 0, 0.35);
+            box-shadow: 0 8px 24px rgba(255, 216, 0, 0.28);
             transition: transform 0.2s;
         }
+
         .btn-spotlight-play:hover {
-            transform: scale(1.04);
+            transform: scale(1.03);
         }
+
         .btn-spotlight-secondary {
-            background: rgba(255, 255, 255, 0.07);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            padding: 12px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 11px 18px;
             border-radius: 999px;
             font-weight: 700;
             font-size: 13px;
             text-decoration: none;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, border-color 0.2s;
         }
+
         .btn-spotlight-secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 216, 0, 0.4);
         }
+
+        /* Cabeçalhos das Seções e Carrosséis */
         .section-header-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 26px 36px 12px 116px;
+            margin: 24px 32px 12px 104px;
         }
+
         .section-header-row h1 {
             margin: 0;
-            font-size: 22px;
-            color: #fff;
+            font-size: 20px;
+            font-weight: 800;
+            color: #f8fafc;
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: -0.01em;
         }
-        .section-header-row h1 span {
+
+        .section-icon-box {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(255, 216, 0, 0.12);
+            border: 1px solid rgba(255, 216, 0, 0.28);
             color: #ffd800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .carousel-nav-btns {
             display: flex;
             gap: 8px;
         }
+
         .carousel-arrow {
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ffd800;
+            color: #f8fafc;
             cursor: pointer;
-            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s;
         }
+
         .carousel-arrow:hover {
-            background: rgba(255, 216, 0, 0.2);
+            background: rgba(255, 216, 0, 0.18);
+            border-color: #ffd800;
+            color: #ffd800;
         }
+
+        /* Soft Edge Content Fade (modern-web-guidance) */
         .scrollable-container {
-            margin-left: 116px !important;
-            max-width: calc(100% - 148px) !important;
-            padding: 8px 4px 18px 4px;
+            margin-left: 104px !important;
+            max-width: calc(100% - 136px) !important;
+            padding: 8px 12px 18px 4px;
             scroll-behavior: smooth;
+            -webkit-mask-image: linear-gradient(to right, black 94%, transparent 100%);
+            mask-image: linear-gradient(to right, black 94%, transparent 100%);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                margin-left: 0;
+                width: 100%;
+                height: 44vh;
+                min-height: 280px;
+            }
+            .top-action-bar,
+            .indie-spotlight-banner,
+            .section-header-row,
+            .scrollable-container {
+                margin-left: 16px !important;
+                margin-right: 16px !important;
+                max-width: calc(100% - 32px) !important;
+            }
         }
     </style>
 </head>
@@ -175,49 +413,110 @@
         <div id="parallax-container"></div>
     </header>
 
+    <!-- Barra de Pesquisa e Divulgação (Sem sobrepor o título Nectar Notes) -->
+    <div class="top-action-bar">
+        <div class="brand-pill-group">
+            <span class="brand-dot"></span>
+            <span class="brand-subtitle"><strong>Colmeia Indie</strong> — Plataforma de descoberta e apoio a artistas independentes</span>
+        </div>
+        <div class="top-controls-right">
+            <div class="search-box-modern">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input id="searchInput" type="search" placeholder="Buscar artista independente, música, estilo ou cidade..." />
+            </div>
+            <button type="button" class="btn-submit-artist" onclick="openIndieSubmitModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Divulgar Artista Indie
+            </button>
+        </div>
+    </div>
+
     <!-- Banner de Artista Indie em Destaque -->
     <section class="indie-spotlight-banner" id="spotlightBanner">
         <div class="spotlight-left">
             <img id="spotlightCover" class="spotlight-cover" src="../../pictures/Capas/Capa01.webp" alt="Artista em Destaque">
             <div>
-                <span class="spotlight-badge">🐝 Artista Indie em Destaque na Colmeia</span>
+                <span class="spotlight-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Artista Independente em Destaque
+                </span>
                 <h2 class="spotlight-title" id="spotlightTitle">Honeycomb Dreams</h2>
-                <div class="spotlight-artist" id="spotlightArtist">Luna & Os Polinizadores • 📍 São Paulo, SP</div>
+                <div class="spotlight-artist" id="spotlightArtist">Luna & Os Polinizadores • São Paulo, SP</div>
                 <p class="spotlight-bio" id="spotlightBio">
                     Banda independente de Dream Pop e Indie formada em garagens paulistanas, misturando sintetizadores quentes com letras poéticas.
                 </p>
             </div>
         </div>
         <div class="spotlight-actions">
-            <button type="button" class="btn-spotlight-play" id="spotlightPlayBtn">▶ Ouvir Agora</button>
-            <a class="btn-spotlight-secondary" id="spotlightProfileBtn" href="telademusica.html?id=1">✨ Conhecer & Apoiar Artista</a>
-            <button type="button" class="btn-spotlight-secondary" onclick="openIndieSubmitModal()">🎸 Sou Artista Indie</button>
+            <button type="button" class="btn-spotlight-play" id="spotlightPlayBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Ouvir Agora
+            </button>
+            <a class="btn-spotlight-secondary" id="spotlightProfileBtn" href="telademusica.html?id=1">
+                Conhecer e Apoiar Artista
+            </a>
+            <button type="button" class="btn-spotlight-secondary" onclick="openIndieSubmitModal()">
+                Cadastrar Projeto Autoral
+            </button>
         </div>
     </section>
 
     <div class="section-header-row">
-        <h1><span>🔥</span> Em Alta na Cena Indie</h1>
+        <h1>
+            <span class="section-icon-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </span>
+            Em Alta na Cena Indie
+        </h1>
         <div class="carousel-nav-btns">
-            <button class="carousel-arrow" onclick="scrollCarousel('container1', -440)">‹</button>
-            <button class="carousel-arrow" onclick="scrollCarousel('container1', 440)">›</button>
+            <button class="carousel-arrow" aria-label="Anterior" onclick="scrollCarousel('container1', -440)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="carousel-arrow" aria-label="Próximo" onclick="scrollCarousel('container1', 440)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
         </div>
     </div>
     <div class="scrollable-container" id="container1"></div>
 
     <div class="section-header-row">
-        <h1><span>🍯</span> Descobertas Recomendadas da Colmeia</h1>
+        <h1>
+            <span class="section-icon-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+            </span>
+            Descobertas Recomendadas da Colmeia
+        </h1>
         <div class="carousel-nav-btns">
-            <button class="carousel-arrow" onclick="scrollCarousel('container2', -440)">‹</button>
-            <button class="carousel-arrow" onclick="scrollCarousel('container2', 440)">›</button>
+            <button class="carousel-arrow" aria-label="Anterior" onclick="scrollCarousel('container2', -440)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="carousel-arrow" aria-label="Próximo" onclick="scrollCarousel('container2', 440)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
         </div>
     </div>
     <div class="scrollable-container" id="container2"></div>
 
     <div class="section-header-row">
-        <h1><span>🎧</span> Lançamentos & Ouvidas Recentemente</h1>
+        <h1>
+            <span class="section-icon-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </span>
+            Lançamentos e Ouvidas Recentemente
+        </h1>
         <div class="carousel-nav-btns">
-            <button class="carousel-arrow" onclick="scrollCarousel('container3', -440)">‹</button>
-            <button class="carousel-arrow" onclick="scrollCarousel('container3', 440)">›</button>
+            <button class="carousel-arrow" aria-label="Anterior" onclick="scrollCarousel('container3', -440)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="carousel-arrow" aria-label="Próximo" onclick="scrollCarousel('container3', 440)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
         </div>
     </div>
     <div class="scrollable-container" id="container3"></div>
@@ -236,14 +535,16 @@
                 <div class="CardImage">
                     <span class="card-genre-pill">${song.genre || 'Indie'}</span>
                     <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}" draggable="false">
-                    <div class="card-play-fab">▶</div>
+                    <div class="card-play-fab">
+                        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
                 </div>
                 <div class="CardContent">
                     <div class="NomeMusica" title="${song.title}"><b>${song.title}</b></div>
                     <div class="NomeArtista" title="${song.artist}">${song.artist}</div>
                     <div class="card-footer-row">
-                        <span class="card-plays-count">🐝 ${song.plays || 120} plays</span>
-                        <a class="btn-open-song" href="telademusica.html?id=${song.id}">Artista →</a>
+                        <span class="card-plays-count">${song.plays || 120} plays</span>
+                        <a class="btn-open-song" href="telademusica.html?id=${song.id}">Ver artista</a>
                     </div>
                 </div>
             `;
@@ -305,28 +606,27 @@
             fetch('../../modules/elements/paralax.html')
                 .then(response => response.text())
                 .then(data => {
-                    const pContainer = document.getElementById('parallax-container');
-                    pContainer.innerHTML = data;
-                    const searchInput = pContainer.querySelector('#searchInput');
-                    if (searchInput) {
-                        searchInput.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                window.location.href = `resultado.html?q=${encodeURIComponent(searchInput.value.trim())}`;
-                            }
-                        });
-                    }
+                    document.getElementById('parallax-container').innerHTML = data;
                 })
                 .catch(error => console.error('Erro ao carregar o parallax:', error));
 
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        window.location.href = `resultado.html?q=${encodeURIComponent(searchInput.value.trim())}`;
+                    }
+                });
+            }
+
             const allSongs = await NectarAPI.getSongs();
 
-            // Preencher Banner de Destaque com o primeiro artista spotlight
             const spotlight = allSongs.find(s => s.is_indie_spotlight) || allSongs[0];
             if (spotlight) {
                 document.getElementById('spotlightCover').src = spotlight.cover_url;
                 document.getElementById('spotlightTitle').textContent = spotlight.title;
-                document.getElementById('spotlightArtist').textContent = `${spotlight.artist} • 📍 ${spotlight.artist_city || 'Cena Indie Brasil'} (${spotlight.genre || 'Indie'})`;
+                document.getElementById('spotlightArtist').textContent = `${spotlight.artist} • ${spotlight.artist_city || 'Cena Indie Brasil'} (${spotlight.genre || 'Indie'})`;
                 document.getElementById('spotlightBio').textContent = spotlight.artist_bio || 'Artista independente em destaque na Colmeia.';
                 document.getElementById('spotlightProfileBtn').href = `telademusica.html?id=${spotlight.id}`;
                 document.getElementById('spotlightPlayBtn').onclick = () => {
@@ -352,17 +652,13 @@
         });
 
         document.addEventListener('scroll', function () {
-            const scrollPosition = window.scrollY;
-            const l1 = document.querySelector('.layer1');
-            const l2 = document.querySelector('.layer2');
-            const l3 = document.querySelector('.layer3');
-            const l4 = document.querySelector('.layer4');
+            const scrollY = Math.min(window.scrollY, 500);
+            const hills = document.querySelector('.layer-hills');
+            const bees = document.querySelector('.layer-bees');
 
-            if (l1) l1.style.transform = `translateY(${scrollPosition * 0.4}px)`;
-            if (l2) l2.style.transform = `translateY(${scrollPosition * 0.2}px)`;
-            if (l3) l3.style.transform = `translateY(${scrollPosition * 0.1}px)`;
-            if (l4) l4.style.transform = `translateY(${scrollPosition * 0.3}px)`;
-        });
+            if (hills) hills.style.transform = `translateY(${scrollY * 0.05}px)`;
+            if (bees) bees.style.transform = `translateY(${-scrollY * 0.08}px)`;
+        }, { passive: true });
     </script>
 </body>
 

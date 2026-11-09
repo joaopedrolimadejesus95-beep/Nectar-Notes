@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="../css/Pets.css">
     <link rel="stylesheet" href="../css/design-system.css">
     <script src="../js/script.js"></script>
-    <title>Mascote Pet da Colmeia - NectarNotes</title>
+    <title>Mascote da Colmeia - NectarNotes</title>
     <style>
         body {
             background: linear-gradient(135deg, #ffd800 0%, #ffb700 100%) !important;
             color: #0b0d14;
         }
         .pets-layout {
-            margin-left: 116px;
+            margin-left: 104px;
             margin-right: 32px;
             padding-top: 28px;
             display: grid;
@@ -115,15 +115,14 @@
 <body>
     <div class="menu">
         <ul>
-            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
-            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
-            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
-            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
-            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Explorar"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Playlists"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Mascote"></a></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
-                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
-                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Configurações"></a></li>
             </div>
         </ul>
     </div>
@@ -133,7 +132,7 @@
             <span style="font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Mascote Polinizador</span>
             <h1 id="petNameDisplay">Buzzy Mel</h1>
             <button type="button" onclick="openRenameModal()" style="background: rgba(255, 216, 0, 0.16); color: #ffd800; border: 1px solid rgba(255, 216, 0, 0.4); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 12px; font-weight: 700;">
-                ✏️ Renomear Mascote
+                Renomear Mascote
             </button>
 
             <div class="xpBar">
@@ -144,23 +143,23 @@
             <img id="ImgPet" src="../../pictures/FotosPets/FotoPet01.jpg" alt="Imagem Pet">
 
             <div style="background: rgba(255,255,255,0.06); padding: 12px; border-radius: 14px; text-align: left; font-size: 13px;">
-                <div>👕 <b>Camisa:</b> <span id="eqShirtName" style="color: #ffd800;">Nenhuma</span></div>
-                <div style="margin-top: 6px;">🕶️ <b>Acessório:</b> <span id="eqFaceName" style="color: #ffd800;">Nenhum</span></div>
+                <div><b>Camisa:</b> <span id="eqShirtName" style="color: #ffd800;">Nenhuma</span></div>
+                <div style="margin-top: 6px;"><b>Acessório:</b> <span id="eqFaceName" style="color: #ffd800;">Nenhum</span></div>
             </div>
         </div>
 
         <div class="wardrobe-card">
-            <h2 style="margin-top: 0; color: #ffd800;">👕 Guarda-Roupa de Festival Indie (Clique para equipar e ganhar +XP)</h2>
+            <h2 style="margin-top: 0; color: #ffd800; font-size: 20px;">Guarda-Roupa de Festival Indie (Clique para equipar e ganhar +XP)</h2>
             <div id="shirtsContainer"></div>
 
-            <h2 style="margin-top: 24px; color: #ffd800;">🕶️ Acessórios de Rosto & Estilo</h2>
+            <h2 style="margin-top: 24px; color: #ffd800; font-size: 20px;">Acessórios de Rosto e Estilo</h2>
             <div id="facesContainer"></div>
         </div>
     </div>
 
     <dialog id="renamePetDialog" class="nectar-modal">
         <div class="modal-header">
-            <h2>🐝 Renomear Mascote</h2>
+            <h2>Renomear Mascote</h2>
             <button type="button" class="modal-close" onclick="document.getElementById('renamePetDialog').close()">✕</button>
         </div>
         <form id="renamePetForm">
@@ -249,7 +248,7 @@
                     const data = await res.json();
                     currentPet = data.pet;
                     renderPetUI();
-                    showNectarToast(`🐝 Item "${item.name}" atualizado! (+XP)`);
+                    showNectarToast(`Item "${item.name}" atualizado (+XP).`);
                     return;
                 }
             } catch (_) {}
@@ -262,7 +261,7 @@
             currentPet.xp = (currentPet.xp || 55) + 15;
             currentPet.level = Math.floor(currentPet.xp / 50) + 1;
             renderPetUI();
-            showNectarToast(`🐝 Item "${item.name}" atualizado! (+15 XP)`);
+            showNectarToast(`Item "${item.name}" atualizado (+15 XP).`);
         }
 
         function openRenameModal() {
@@ -288,13 +287,13 @@
                     const data = await res.json();
                     currentPet = data.pet;
                     renderPetUI();
-                    showNectarToast(`🐝 Nome atualizado para "${newName}"!`);
+                    showNectarToast(`Nome atualizado para "${newName}".`);
                     return;
                 }
             } catch (_) {}
             currentPet.name = newName;
             renderPetUI();
-            showNectarToast(`🐝 Nome atualizado para "${newName}"!`);
+            showNectarToast(`Nome atualizado para "${newName}".`);
         });
 
         document.addEventListener('DOMContentLoaded', loadPetData);

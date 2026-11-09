@@ -16,7 +16,7 @@
             height: auto;
             min-height: 85vh;
             padding-top: 90px;
-            padding-left: 116px;
+            padding-left: 104px;
             padding-right: 32px;
             align-items: flex-start;
             background-color: #0b0d14 !important;
@@ -69,30 +69,29 @@
 
     <div class="menu">
         <ul>
-            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
-            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
-            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
-            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
-            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Explorar"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Playlists"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Mascote"></a></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
-                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
-                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Configurações"></a></li>
             </div>
         </ul>
     </div>
 
     <main>
         <div class="container" style="width: 100%; text-align: left;">
-            <h1 class="temp" id="resultsCount" style="margin: 0; font-size: 28px;">Buscando...</h1>
+            <h1 class="temp" id="resultsCount" style="margin: 0; font-size: 26px;">Buscando...</h1>
             <div class="filter-chips">
                 <button class="chip-btn active" onclick="setQuickFilter('', this)">Todos</button>
                 <button class="chip-btn" onclick="setQuickFilter('Indie Rock', this)">Indie Rock</button>
                 <button class="chip-btn" onclick="setQuickFilter('Bedroom', this)">Bedroom Pop</button>
                 <button class="chip-btn" onclick="setQuickFilter('Lo-Fi', this)">Lo-Fi</button>
                 <button class="chip-btn" onclick="setQuickFilter('MPB', this)">MPB / Folk</button>
-                <button class="chip-btn" onclick="setQuickFilter('São Paulo', this)">📍 São Paulo</button>
-                <button class="chip-btn" onclick="setQuickFilter('Curitiba', this)">📍 Curitiba</button>
+                <button class="chip-btn" onclick="setQuickFilter('São Paulo', this)">São Paulo</button>
+                <button class="chip-btn" onclick="setQuickFilter('Curitiba', this)">Curitiba</button>
             </div>
             <div class="results-grid" id="resultsGrid"></div>
         </div>
@@ -116,14 +115,16 @@
                     <div class="CardImage">
                         <span class="card-genre-pill">${song.genre || 'Indie'}</span>
                         <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}">
-                        <div class="card-play-fab">▶</div>
+                        <div class="card-play-fab">
+                            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
                     </div>
                     <div class="CardContent">
                         <div class="NomeMusica"><b>${song.title}</b></div>
                         <div class="NomeArtista">${song.artist}</div>
                         <div class="card-footer-row">
-                            <span class="card-plays-count">📍 ${song.artist_city || 'Brasil'}</span>
-                            <a class="btn-open-song" href="telademusica.html?id=${song.id}">Artista →</a>
+                            <span class="card-plays-count">${song.artist_city || 'Brasil'}</span>
+                            <a class="btn-open-song" href="telademusica.html?id=${song.id}">Ver artista</a>
                         </div>
                     </div>
                 `;

@@ -13,8 +13,8 @@
             background-color: #0b0d14 !important;
         }
         .content {
-            margin-left: 116px !important;
-            width: calc(100% - 132px) !important;
+            margin-left: 104px !important;
+            width: calc(100% - 124px) !important;
             padding: 24px !important;
         }
         .banner {
@@ -51,15 +51,14 @@
 <body>
     <div class="menu">
         <ul>
-            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Botão de Início"></a></li>
-            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Botão de Party"></a></li>
-            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Botão de Album"></a></li>
-            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Botão de Pets"></a></li>
-            <li><button type="button" class="btn-nav-indie" title="Divulgar Artista Indie" onclick="openIndieSubmitModal()">+</button></li>
+            <li><a href="principal.html" onclick="handleButtonClick('inicio')"><img src="../../pictures/icons/main.png" alt="Início"></a></li>
+            <li><a href="TelaPesquisa.html" onclick="handleButtonClick('party')"><img src="../../pictures/icons/party.png" alt="Explorar"></a></li>
+            <li><a href="MusicasSalvas.html" onclick="handleButtonClick('album')"><img src="../../pictures/icons/liked.png" alt="Playlists"></a></li>
+            <li><a href="TelaPets.html" onclick="handleButtonClick('pets')"><img src="../../pictures/icons/Pets.png" alt="Mascote"></a></li>
             <li class="menu-separator"></li>
             <div class="menu-profile-config">
-                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Botão de Perfil"></a></li>
-                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Botão de Configurações"></a></li>
+                <li><a href="TelaPerfil.html" onclick="handleButtonClick('perfil')"><img src="../../pictures/icons/profile.png" alt="Perfil"></a></li>
+                <li><a href="TelaConfig.html" onclick="handleButtonClick('configuracoes')"><img src="../../pictures/icons/config.png" alt="Configurações"></a></li>
             </div>
         </ul>
     </div>
@@ -78,22 +77,22 @@
                 </div>
                 <div class="profile-info">
                     <div class="username" id="profileUsername">AbelhaRainha</div>
-                    <div class="bio" id="profileBio" style="font-size: 15px; color: #cbd5e1;">Polinizando os melhores artistas indies da nossa colmeia! 🐝🍯</div>
-                    <div class="country" id="profileCountry" style="font-size: 13px; color: #ffd800;">📍 Brasil • Ouvinte Polinizador</div>
+                    <div class="bio" id="profileBio" style="font-size: 15px; color: #cbd5e1;">Apoiando e divulgando os melhores artistas indies da nossa colmeia.</div>
+                    <div class="country" id="profileCountry" style="font-size: 13px; color: #ffd800;">Brasil • Ouvinte Polinizador</div>
                 </div>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button type="button" onclick="openIndieSubmitModal()" style="background: linear-gradient(135deg, #ffd800, #ff9d00); color: #0b0d14; border: none; padding: 10px 18px; border-radius: 999px; font-weight: 800; cursor: pointer;">
-                    🐝 + Divulgar Música Indie
+                    + Divulgar Música Indie
                 </button>
-                <a href="TelaConfig.html" style="background: rgba(255,255,255,0.08); color: #fff; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 13px;">⚙️ Editar Perfil</a>
+                <a href="TelaConfig.html" style="background: rgba(255,255,255,0.08); color: #fff; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 13px;">Editar Perfil</a>
             </div>
         </div>
 
         <div class="tabs" style="margin-top: 25px;">
-            <div class="tab active" id="tabLiked" onclick="switchTab('liked')">❤️ Músicas Polinizadas</div>
-            <div class="tab" id="tabPlaylists" onclick="switchTab('playlists')">🎵 Minhas Playlists</div>
-            <div class="tab" id="tabPet" onclick="switchTab('pet')">🐝 Meu Mascote Pet</div>
+            <div class="tab active" id="tabLiked" onclick="switchTab('liked')">Músicas Favoritas</div>
+            <div class="tab" id="tabPlaylists" onclick="switchTab('playlists')">Minhas Playlists</div>
+            <div class="tab" id="tabPet" onclick="switchTab('pet')">Meu Mascote</div>
         </div>
 
         <div class="info" id="profileContentArea" style="justify-content: flex-start;"></div>
@@ -103,7 +102,7 @@
         let userProfileData = {
             user: {
                 username: localStorage.getItem('username') || 'AbelhaRainha',
-                bio: localStorage.getItem('bio') || 'Polinizando os melhores artistas indies da nossa colmeia! 🐝🍯',
+                bio: localStorage.getItem('bio') || 'Apoiando e divulgando os melhores artistas indies da nossa colmeia.',
                 country: localStorage.getItem('country') || 'Brasil',
                 profile_pic: localStorage.getItem('profilePic') || '../../pictures/icons/profile.png'
             },
@@ -135,8 +134,8 @@
             } catch (_) {}
 
             document.getElementById('profileUsername').textContent = userProfileData.user.username;
-            document.getElementById('profileBio').textContent = userProfileData.user.bio;
-            document.getElementById('profileCountry').textContent = '📍 ' + (userProfileData.user.country || 'Brasil') + ' • Ouvinte Polinizador';
+            document.getElementById('profileBio').textContent = (userProfileData.user.bio || '').replace(/[\u{1F300}-\u{1FAFF}]/gu, '').trim();
+            document.getElementById('profileCountry').textContent = (userProfileData.user.country || 'Brasil') + ' • Ouvinte Polinizador';
             document.getElementById('profilePicture').src = userProfileData.user.profile_pic;
 
             switchTab('liked');
@@ -151,7 +150,7 @@
                 document.getElementById('tabLiked').classList.add('active');
                 const songs = userProfileData.likedSongs || [];
                 if (songs.length === 0) {
-                    area.innerHTML = '<p style="color: #aaa;">Nenhuma música curtida ainda. Clique em uma música para adicioná-la à colmeia!</p>';
+                    area.innerHTML = '<p style="color: #aaa;">Nenhuma música curtida ainda. Clique em uma música para adicioná-la à colmeia.</p>';
                     return;
                 }
                 songs.forEach(song => {
@@ -163,14 +162,16 @@
                         <div class="CardImage">
                             <span class="card-genre-pill">${song.genre || 'Indie'}</span>
                             <img class="CapaMusica" src="${song.cover_url}" alt="${song.title}">
-                            <div class="card-play-fab">▶</div>
+                            <div class="card-play-fab">
+                                <svg class="ui-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
                         </div>
                         <div class="CardContent">
                             <div class="NomeMusica"><b>${song.title}</b></div>
                             <div class="NomeArtista">${song.artist}</div>
                             <div class="card-footer-row">
-                                <span class="card-plays-count">❤️ Polinizada</span>
-                                <a class="btn-open-song" href="telademusica.html?id=${song.id}">Artista →</a>
+                                <span class="card-plays-count">Favorita</span>
+                                <a class="btn-open-song" href="telademusica.html?id=${song.id}">Ver artista</a>
                             </div>
                         </div>
                     `;
@@ -182,7 +183,7 @@
                 area.innerHTML = `
                     <div style="padding: 15px;">
                         <p style="color: #cbd5e1;">Acesse e gerencie todas as suas playlists indies salvas na Colmeia:</p>
-                        <a href="MusicasSalvas.html" style="display: inline-block; background: linear-gradient(135deg, #ffd800, #ff9d00); color: #000; padding: 12px 24px; border-radius: 999px; text-decoration: none; font-weight: 800;">Abrir Playlists Salvas →</a>
+                        <a href="MusicasSalvas.html" style="display: inline-block; background: linear-gradient(135deg, #ffd800, #ff9d00); color: #000; padding: 12px 24px; border-radius: 999px; text-decoration: none; font-weight: 800;">Abrir Playlists Salvas</a>
                     </div>
                 `;
             } else if (tabName === 'pet') {
@@ -194,7 +195,7 @@
                         <div>
                             <h3 style="margin: 0 0 8px 0; color: #ffd800;">${pet.name}</h3>
                             <p style="margin: 4px 0; color: #cbd5e1;">Nível: <b>${pet.level}</b> (${pet.xp} XP)</p>
-                            <a href="TelaPets.html" style="display: inline-block; margin-top: 8px; background: linear-gradient(135deg, #ffd800, #ff9d00); color: #000; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-weight: 800;">Personalizar Mascote →</a>
+                            <a href="TelaPets.html" style="display: inline-block; margin-top: 8px; background: linear-gradient(135deg, #ffd800, #ff9d00); color: #000; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-weight: 800;">Personalizar Mascote</a>
                         </div>
                     </div>
                 `;

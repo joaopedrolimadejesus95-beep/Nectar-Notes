@@ -1,6 +1,15 @@
 // ============================================================================
-// NectarNotes - Script Global, Mini-Player Persistente & Vitrine Indie
+// NectarNotes - Script Global, Mini-Player Persistente & Vitrine Indie (Sem Emojis)
 // ============================================================================
+
+const SVG_ICONS = {
+    play: '<svg class="ui-icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none;"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>',
+    pause: '<svg class="ui-icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>',
+    prev: '<svg class="ui-icon" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>',
+    next: '<svg class="ui-icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>',
+    share: '<svg class="ui-icon" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>',
+    arrowRight: '<svg class="ui-icon" viewBox="0 0 24 24" style="width:13px;height:13px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+};
 
 const DEFAULT_SONGS_FALLBACK = [
     { id: 1, title: 'Honeycomb Dreams', artist: 'Luna & Os Polinizadores', album: 'Cena Indie Vol. 1', genre: 'Indie Pop', duration: '3:15', release_year: 2026, cover_url: '../../pictures/Capas/Capa01.webp', audio_url: '../../audios/audio1.mp3', category: 'em_alta', plays: 320, liked: 1, artist_city: 'São Paulo, SP', artist_bio: 'Banda independente de Dream Pop e Indie formada em garagens paulistanas, misturando sintetizadores quentes com letras poéticas.', instagram_url: 'https://instagram.com/lunaeospolinizadores', spotify_url: 'https://open.spotify.com', soundcloud_url: 'https://soundcloud.com', youtube_url: 'https://youtube.com', support_link: 'https://apoia.se', is_indie_spotlight: 1 },
@@ -76,7 +85,7 @@ const NectarAPI = {
         localStorage.setItem('userId', String(user.id || 1));
         localStorage.setItem('username', user.username || 'AbelhaRainha');
         localStorage.setItem('email', user.email || 'rainha@nectarnotes.com');
-        localStorage.setItem('bio', user.bio || 'Polinizando os melhores artistas indies da nossa colmeia! 🐝🍯');
+        localStorage.setItem('bio', user.bio || 'Apoiando artistas independentes na comunidade NectarNotes.');
         localStorage.setItem('country', user.country || 'brasil');
         if (user.profile_pic) {
             localStorage.setItem('profilePic', user.profile_pic);
@@ -249,14 +258,14 @@ function ensureMiniPlayer() {
             <img id="mpCover" class="mp-cover" src="${resolveAssetUrl(currentPlayingSong.cover_url)}" alt="Capa">
             <div class="mp-meta">
                 <div id="mpTitle" class="mp-title">${currentPlayingSong.title}</div>
-                <div id="mpArtist" class="mp-artist">🐝 ${currentPlayingSong.artist} • ${currentPlayingSong.artist_city || 'Cena Indie'}</div>
+                <div id="mpArtist" class="mp-artist">${currentPlayingSong.artist} • ${currentPlayingSong.artist_city || 'Cena Indie'}</div>
             </div>
         </div>
         <div class="mp-center">
             <div class="mp-controls">
-                <button class="mp-btn" title="Faixa Anterior" onclick="skipMiniPlayer(-1)">⏮</button>
-                <button id="mpPlayBtn" class="mp-btn-play" title="Tocar / Pausar" onclick="toggleMiniPlayer()">▶</button>
-                <button class="mp-btn" title="Próxima Faixa" onclick="skipMiniPlayer(1)">⏭</button>
+                <button class="mp-btn" title="Faixa Anterior" onclick="skipMiniPlayer(-1)">${SVG_ICONS.prev}</button>
+                <button id="mpPlayBtn" class="mp-btn-play" title="Tocar / Pausar" onclick="toggleMiniPlayer()">${SVG_ICONS.play}</button>
+                <button class="mp-btn" title="Próxima Faixa" onclick="skipMiniPlayer(1)">${SVG_ICONS.next}</button>
             </div>
             <div class="mp-progress-wrap">
                 <span id="mpCurrentTime">0:00</span>
@@ -265,8 +274,8 @@ function ensureMiniPlayer() {
             </div>
         </div>
         <div class="mp-right">
-            <button class="mp-action-pill" onclick="shareCurrentSong()" title="Copiar link para divulgar artista">🔗 Divulgar</button>
-            <a id="mpArtistLink" class="mp-action-pill" href="${resolveAssetUrl('view/html/telademusica.html')}?id=1">✨ Ver Artista</a>
+            <button class="mp-action-pill" onclick="shareCurrentSong()" title="Copiar link para divulgar artista">${SVG_ICONS.share} Compartilhar</button>
+            <a id="mpArtistLink" class="mp-action-pill primary" href="${resolveAssetUrl('view/html/telademusica.html')}?id=1">Perfil do Artista</a>
         </div>
     `;
     document.body.appendChild(playerEl);
@@ -287,16 +296,19 @@ function ensureMiniPlayer() {
     });
 
     globalAudio.addEventListener('ended', () => {
-        document.getElementById('mpPlayBtn').textContent = '▶';
+        document.getElementById('mpPlayBtn').innerHTML = SVG_ICONS.play;
     });
 
     return playerEl;
 }
 
 function updateMiniPlayerSong(song, autoPlay = true) {
-    ensureMiniPlayer();
-    if (!song || !globalAudio) return;
+    const playerEl = ensureMiniPlayer();
+    if (!song || !globalAudio || !playerEl) return;
     currentPlayingSong = song;
+
+    playerEl.classList.add('active');
+    document.body.classList.add('has-active-player');
 
     const coverEl = document.getElementById('mpCover');
     const titleEl = document.getElementById('mpTitle');
@@ -306,7 +318,7 @@ function updateMiniPlayerSong(song, autoPlay = true) {
 
     if (coverEl) coverEl.src = resolveAssetUrl(song.cover_url);
     if (titleEl) titleEl.textContent = song.title;
-    if (artistEl) artistEl.textContent = `🐝 ${song.artist} • ${song.artist_city || song.genre || 'Cena Indie'}`;
+    if (artistEl) artistEl.textContent = `${song.artist} • ${song.artist_city || song.genre || 'Cena Indie'}`;
     if (linkEl) {
         const isInView = window.location.pathname.includes('/view/html/');
         linkEl.href = `${isInView ? 'telademusica.html' : 'view/html/telademusica.html'}?id=${song.id}`;
@@ -319,7 +331,7 @@ function updateMiniPlayerSong(song, autoPlay = true) {
 
     if (autoPlay) {
         globalAudio.play().catch(() => {});
-        if (playBtn) playBtn.textContent = '⏸';
+        if (playBtn) playBtn.innerHTML = SVG_ICONS.pause;
         NectarAPI.recordPlay(song.id);
     }
 }
@@ -330,10 +342,10 @@ function toggleMiniPlayer() {
     const playBtn = document.getElementById('mpPlayBtn');
     if (globalAudio.paused) {
         globalAudio.play().catch(() => {});
-        if (playBtn) playBtn.textContent = '⏸';
+        if (playBtn) playBtn.innerHTML = SVG_ICONS.pause;
     } else {
         globalAudio.pause();
-        if (playBtn) playBtn.textContent = '▶';
+        if (playBtn) playBtn.innerHTML = SVG_ICONS.play;
     }
 }
 
@@ -351,7 +363,7 @@ function shareCurrentSong(songId) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(shareUrl).catch(() => {});
     }
-    showNectarToast('🔗 Link da música copiado! Pronto para divulgar nos Stories / WhatsApp 🐝');
+    showNectarToast('Link da faixa copiado para a área de transferência.');
 }
 
 function playMusic(cardElement, event) {
@@ -364,7 +376,7 @@ function playMusic(cardElement, event) {
     document.querySelectorAll('.CardMusic.playing').forEach(el => {
         el.classList.remove('playing');
         const fab = el.querySelector('.card-play-fab');
-        if (fab) fab.textContent = '▶';
+        if (fab) fab.innerHTML = SVG_ICONS.play;
     });
 
     if (isAlreadyPlaying && globalAudio && !globalAudio.paused) {
@@ -374,7 +386,7 @@ function playMusic(cardElement, event) {
 
     cardElement.classList.add('playing');
     const fab = cardElement.querySelector('.card-play-fab');
-    if (fab) fab.textContent = '⏸';
+    if (fab) fab.innerHTML = SVG_ICONS.pause;
 
     NectarAPI.getSongById(songId).then(song => {
         updateMiniPlayerSong(song, true);
@@ -392,11 +404,11 @@ function openIndieSubmitModal() {
         dialog.className = 'nectar-modal';
         dialog.innerHTML = `
             <div class="modal-header">
-                <h2>🐝 Polinizar Artista Indie</h2>
+                <h2>Cadastrar Artista ou Faixa Indie</h2>
                 <button type="button" class="modal-close" onclick="document.getElementById('indieSubmitDialog').close()">✕</button>
             </div>
-            <p style="margin-top: 0; font-size: 13px; color: #cbd5e1; margin-bottom: 16px;">
-                Cadastre uma faixa autoral sua ou de um amigo para aparecer no topo da Colmeia com links de divulgação:
+            <p style="margin-top: 0; font-size: 13px; color: #94a3b8; margin-bottom: 16px;">
+                Publique uma faixa autoral no catálogo da plataforma com links diretos de divulgação:
             </p>
             <form id="indieSubmitForm">
                 <div class="nectar-form-grid">
@@ -405,7 +417,7 @@ function openIndieSubmitModal() {
                         <input type="text" name="title" placeholder="Ex: Sol de Outubro" required>
                     </div>
                     <div class="nectar-form-group">
-                        <label>Artista / Banda Indie *</label>
+                        <label>Artista / Banda *</label>
                         <input type="text" name="artist" placeholder="Ex: Banda Garagem Azul" required>
                     </div>
                     <div class="nectar-form-group">
@@ -421,7 +433,7 @@ function openIndieSubmitModal() {
                         </select>
                     </div>
                     <div class="nectar-form-group">
-                        <label>Cidade / Cena Local</label>
+                        <label>Cidade / UF</label>
                         <input type="text" name="artist_city" placeholder="Ex: São Paulo, SP">
                     </div>
                     <div class="nectar-form-group">
@@ -433,11 +445,11 @@ function openIndieSubmitModal() {
                         <input type="url" name="spotify_url" placeholder="https://open.spotify.com/...">
                     </div>
                     <div class="nectar-form-group full">
-                        <label>Link de Apoio / Ingresso / PIX (Opcional)</label>
-                        <input type="text" name="support_link" placeholder="Link do Apoia.se, Sympla ou chave PIX">
+                        <label>Link de Apoio / Ingressos (Opcional)</label>
+                        <input type="text" name="support_link" placeholder="Link do Apoia.se, Sympla ou PIX">
                     </div>
                     <div class="nectar-form-group full">
-                        <label>Capa da Música (Escolha do acervo ou cole uma URL de imagem)</label>
+                        <label>Capa da Música</label>
                         <select name="cover_url">
                             <option value="/pictures/Capas/Capa01.webp">Capa 01 — Colmeia Dourada</option>
                             <option value="/pictures/Capas/Capa02.jpg">Capa 02 — Indie Vibes</option>
@@ -448,16 +460,15 @@ function openIndieSubmitModal() {
                         </select>
                     </div>
                     <div class="nectar-form-group full">
-                        <label>Bio / História da Banda ou Faixa</label>
-                        <textarea name="artist_bio" rows="3" placeholder="Conte um pouco sobre o som de vocês, influências e próximos shows..."></textarea>
+                        <label>Biografia da Banda / Sobre a Faixa</label>
+                        <textarea name="artist_bio" rows="3" placeholder="Descreva a história da banda, influências e agenda..."></textarea>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary-nectar" style="margin-top: 8px;">🚀 Publicar na Colmeia</button>
+                <button type="submit" class="btn-primary-nectar" style="margin-top: 8px;">Publicar no Catálogo</button>
             </form>
         `;
         document.body.appendChild(dialog);
 
-        // Light dismiss ao clicar no backdrop
         dialog.addEventListener('click', (e) => {
             if (e.target === dialog) dialog.close();
         });
@@ -469,16 +480,17 @@ function openIndieSubmitModal() {
             const created = await NectarAPI.createIndieSong(payload);
             dialog.close();
             e.target.reset();
-            showNectarToast(`🐝 "${created.title}" de ${created.artist} foi publicada no topo da Colmeia!`);
+            showNectarToast(`"${created.title}" (${created.artist}) foi publicada com sucesso.`);
             setTimeout(() => {
                 const isInView = window.location.pathname.includes('/view/html/');
                 window.location.href = isInView ? `telademusica.html?id=${created.id}` : `view/html/telademusica.html?id=${created.id}`;
-            }, 900);
+            }, 800);
         });
     }
     dialog.showModal();
 }
 
+window.SVG_ICONS = SVG_ICONS;
 window.NectarAPI = NectarAPI;
 window.handleButtonClick = handleButtonClick;
 window.playMusic = playMusic;
